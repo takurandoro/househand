@@ -3,6 +3,16 @@
 ## Project Overview
 House Hand is a capstone project developed by Takura Ndoro as part of research on formalizing the informal sector in Rwanda. This platform aims to bridge the gap between skilled workers and clients, providing a structured and formal approach to service delivery in the informal sector.
 
+## Important Links
+- **GitHub Repository**: [github.com/takurandoro/househand](https://github.com/takurandoro/househand)
+- **Design Documentation**: [Figma Designs](https://www.figma.com/design/XyulzlRuFtR07NSzWhJmbD/Takura-Munyaradzi-Ndoro-s-team-library?node-id=0-1&t=f9NoNwRW71NFWMjg-1)
+- **Live Demo**: [househand.netlify.app](https://6845f3a17619e30008bc77ad--househand.netlify.app/)
+
+## Prototype Demonstrations
+Watch our prototype walkthrough videos to see House Hand in action:
+- [Prototype Demo Part 1](https://www.loom.com/share/02addba1514f4f39b4c77193109babe5?sid=568c5dba-2636-47e9-9bac-0f0771952ed4) - Core features and user interface
+- [Prototype Demo Part 2](https://www.loom.com/share/e31776b3a2034e29ae4b5fbd618f623b) - Advanced features and interactions
+
 ## Project Description
 House Hand serves as a digital marketplace that connects skilled workers (helpers) with clients seeking various services. The platform focuses on:
 - Creating formal employment opportunities
@@ -36,7 +46,7 @@ This project is built using modern web technologies:
 ### Installation
 ```bash
 # Clone the repository
-git clone [repository-url]
+git clone https://github.com/takurandoro/househand.git
 
 # Navigate to project directory
 cd househand
