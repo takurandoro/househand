@@ -9,7 +9,7 @@ House Hand is a capstone project developed by Takura Ndoro as part of research o
 - **Live Demo**: [househand.netlify.app](https://6845f3a17619e30008bc77ad--househand.netlify.app/)
 
 ## Prototype Demonstrations
-Watch our prototype walkthrough videos to see House Hand in action:
+Watch my prototype walkthrough videos to see House Hand in action: (Sunnative Submission)
 - [Prototype Demo Part 1](https://www.loom.com/share/02addba1514f4f39b4c77193109babe5?sid=568c5dba-2636-47e9-9bac-0f0771952ed4) - Core features and user interface
 - [Prototype Demo Part 2](https://www.loom.com/share/e31776b3a2034e29ae4b5fbd618f623b) - Advanced features and interactions
 
