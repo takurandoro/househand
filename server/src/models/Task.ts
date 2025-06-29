@@ -1,6 +1,7 @@
-import mongoose from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IBid {
+  _id?: mongoose.Types.ObjectId;
   helperId: mongoose.Types.ObjectId;
   helperName: string;
   price: string;
@@ -10,7 +11,8 @@ export interface IBid {
   createdAt: Date;
 }
 
-export interface ITask extends mongoose.Document {
+export interface ITask extends Document {
+  _id: mongoose.Types.ObjectId;
   title: string;
   description: string;
   location: string;
@@ -20,14 +22,14 @@ export interface ITask extends mongoose.Document {
   clientId: mongoose.Types.ObjectId;
   clientName: string;
   status: 'active' | 'in-progress' | 'completed' | 'cancelled';
-  bids: IBid[];
+  bids: mongoose.Types.DocumentArray<IBid>;
   selectedBidId?: string;
   createdAt: Date;
 }
 
-const bidSchema = new mongoose.Schema({
+const bidSchema = new Schema<IBid>({
   helperId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
@@ -58,7 +60,7 @@ const bidSchema = new mongoose.Schema({
   }
 });
 
-const taskSchema = new mongoose.Schema({
+const taskSchema = new Schema<ITask>({
   title: {
     type: String,
     required: [true, 'Task title is required'],
@@ -88,7 +90,7 @@ const taskSchema = new mongoose.Schema({
     required: [true, 'Task date is required']
   },
   clientId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },

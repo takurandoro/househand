@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Task } from '../models/Task';
+import { Task, ITask } from '../models/Task';
 import { AppError } from '../middleware/errorHandler';
 
 // Create a new task
@@ -7,15 +7,13 @@ export const createTask = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
-    const taskData = {
+    const task = await Task.create({
       ...req.body,
       clientId: req.user._id,
       clientName: req.user.name
-    };
-
-    const task = await Task.create(taskData);
+    });
 
     res.status(201).json({
       status: 'success',
@@ -27,29 +25,17 @@ export const createTask = async (
 };
 
 // Get all tasks (with filters)
-export const getTasks = async (
+export const getAllTasks = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
-    const filters: any = { ...req.query };
-    
-    // If helper is searching, only show active tasks
-    if (req.user.role === 'helper') {
-      filters.status = 'active';
-    }
-    
-    // If client is viewing their tasks, filter by clientId
-    if (req.user.role === 'client') {
-      filters.clientId = req.user._id;
-    }
-
-    const tasks = await Task.find(filters).sort('-createdAt');
+    const query = req.user.role === 'helper' ? { status: 'active' } : {};
+    const tasks = await Task.find(query);
 
     res.status(200).json({
       status: 'success',
-      results: tasks.length,
       data: { tasks }
     });
   } catch (error) {
@@ -62,12 +48,11 @@ export const getTask = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
-    const task = await Task.findById(req.params.id);
-
+    const task = await Task.findById(req.params.taskId);
     if (!task) {
-      throw new AppError('No task found with that ID', 404);
+      return next(new AppError('Task not found', 404));
     }
 
     res.status(200).json({
@@ -84,26 +69,34 @@ export const submitBid = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const task = await Task.findById(req.params.taskId);
-
     if (!task) {
-      throw new AppError('No task found with that ID', 404);
+      return next(new AppError('Task not found', 404));
     }
 
     if (task.status !== 'active') {
-      throw new AppError('This task is no longer accepting bids', 400);
+      return next(new AppError('Task is not accepting bids', 400));
     }
 
-    const bid = {
-      ...req.body,
+    const existingBid = task.bids.find(
+      bid => bid.helperId.toString() === req.user._id.toString()
+    );
+    if (existingBid) {
+      return next(new AppError('You have already submitted a bid', 400));
+    }
+
+    task.bids.push({
       helperId: req.user._id,
       helperName: req.user.name,
-      status: 'pending'
-    };
+      price: req.body.price,
+      timeframe: req.body.timeframe,
+      message: req.body.message,
+      status: 'pending',
+      createdAt: new Date()
+    });
 
-    task.bids.push(bid);
     await task.save();
 
     res.status(200).json({
@@ -120,30 +113,38 @@ export const acceptBid = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const task = await Task.findById(req.params.taskId);
-
     if (!task) {
-      throw new AppError('No task found with that ID', 404);
+      return next(new AppError('Task not found', 404));
     }
 
     if (task.clientId.toString() !== req.user._id.toString()) {
-      throw new AppError('You are not authorized to accept bids for this task', 403);
+      return next(new AppError('You are not authorized to accept bids for this task', 403));
     }
 
-    const bid = task.bids.id(req.params.bidId);
+    const bid = task.bids.find(b => b._id?.toString() === req.params.bidId);
     if (!bid) {
-      throw new AppError('No bid found with that ID', 404);
+      return next(new AppError('Bid not found', 404));
     }
 
-    // Update bid statuses
+    if (task.status !== 'active') {
+      return next(new AppError('Task is not in active status', 400));
+    }
+
+    // Update bid status
+    bid.status = 'accepted';
+    task.status = 'in-progress';
+    task.selectedBidId = bid._id?.toString();
+
+    // Update other bids to rejected
     task.bids.forEach(b => {
-      b.status = b._id.toString() === req.params.bidId ? 'accepted' : 'rejected';
+      if (b._id?.toString() !== req.params.bidId) {
+        b.status = 'rejected';
+      }
     });
 
-    task.status = 'in-progress';
-    task.selectedBidId = req.params.bidId;
     await task.save();
 
     res.status(200).json({
@@ -160,16 +161,19 @@ export const completeTask = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const task = await Task.findById(req.params.taskId);
-
     if (!task) {
-      throw new AppError('No task found with that ID', 404);
+      return next(new AppError('Task not found', 404));
     }
 
     if (task.clientId.toString() !== req.user._id.toString()) {
-      throw new AppError('You are not authorized to complete this task', 403);
+      return next(new AppError('You are not authorized to complete this task', 403));
+    }
+
+    if (task.status !== 'in-progress') {
+      return next(new AppError('Task is not in progress', 400));
     }
 
     task.status = 'completed';

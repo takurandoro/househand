@@ -1,11 +1,27 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import { User } from '../models/User';
+import jwt, { SignOptions, Secret } from 'jsonwebtoken';
+import { User, IUser } from '../models/User';
 import { AppError } from '../middleware/errorHandler';
 
 const signToken = (userId: string): string => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET!, {
-    expiresIn: process.env.JWT_EXPIRES_IN
+  const secret = process.env.JWT_SECRET || 'test-secret';
+  const options: SignOptions = { expiresIn: '1h' };
+  return jwt.sign({ id: userId }, secret as Secret, options);
+};
+
+const createSendToken = (user: IUser, statusCode: number, res: Response) => {
+  const token = signToken(user._id.toString());
+
+  // Remove password from output
+  const userObject = user.toObject();
+  delete userObject.password;
+
+  res.status(statusCode).json({
+    status: 'success',
+    token,
+    data: {
+      user: userObject
+    }
   });
 };
 
@@ -13,36 +29,20 @@ export const signup = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
-    const { email, password, name, role } = req.body;
-
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      throw new AppError('Email already in use', 400);
-    }
-
-    // Create new user
     const user = await User.create({
-      email,
-      password,
-      name,
-      role
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      role: req.body.role
     });
 
-    // Generate token
-    const token = signToken(user._id);
-
-    // Remove password from output
-    user.password = undefined;
-
-    res.status(201).json({
-      status: 'success',
-      token,
-      data: { user }
-    });
-  } catch (error) {
+    createSendToken(user, 201, res);
+  } catch (error: any) {
+    if (error.code === 11000) {
+      return next(new AppError('Email already in use', 400));
+    }
     next(error);
   }
 };
@@ -51,32 +51,22 @@ export const login = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const { email, password } = req.body;
 
     // Check if email and password exist
     if (!email || !password) {
-      throw new AppError('Please provide email and password', 400);
+      return next(new AppError('Please provide email and password', 400));
     }
 
     // Check if user exists && password is correct
     const user = await User.findOne({ email }).select('+password');
     if (!user || !(await user.comparePassword(password))) {
-      throw new AppError('Incorrect email or password', 401);
+      return next(new AppError('Incorrect email or password', 401));
     }
 
-    // Generate token
-    const token = signToken(user._id);
-
-    // Remove password from output
-    user.password = undefined;
-
-    res.status(200).json({
-      status: 'success',
-      token,
-      data: { user }
-    });
+    createSendToken(user, 200, res);
   } catch (error) {
     next(error);
   }
