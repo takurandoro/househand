@@ -1,5 +1,5 @@
-
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { auth } from '@/lib/api';
 
 interface User {
   id: string;
@@ -23,9 +23,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is already logged in (from localStorage)
+    // Check if user is already logged in
+    const token = localStorage.getItem('househand_token');
     const savedUser = localStorage.getItem('househand_user');
-    if (savedUser) {
+    if (token && savedUser) {
       setUser(JSON.parse(savedUser));
     }
     setIsLoading(false);
@@ -34,19 +35,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string, role: 'client' | 'helper') => {
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const user: User = {
-        id: `${role}_${Date.now()}`,
-        email,
-        name: email.split('@')[0], // Simple name extraction for demo
-        role
-      };
-      
+      const { token, data: { user } } = await auth.login(email, password, role);
       setUser(user);
+      localStorage.setItem('househand_token', token);
       localStorage.setItem('househand_user', JSON.stringify(user));
-      console.log('User logged in:', user);
     } catch (error) {
       console.error('Login failed:', error);
       throw error;
@@ -58,19 +50,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signup = async (email: string, password: string, name: string, role: 'client' | 'helper') => {
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const user: User = {
-        id: `${role}_${Date.now()}`,
-        email,
-        name,
-        role
-      };
-      
+      const { token, data: { user } } = await auth.signup(email, password, name, role);
       setUser(user);
+      localStorage.setItem('househand_token', token);
       localStorage.setItem('househand_user', JSON.stringify(user));
-      console.log('User signed up:', user);
     } catch (error) {
       console.error('Signup failed:', error);
       throw error;
@@ -81,8 +64,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem('househand_token');
     localStorage.removeItem('househand_user');
-    console.log('User logged out');
   };
 
   return (
