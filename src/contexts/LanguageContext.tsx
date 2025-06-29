@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface LanguageContextType {
@@ -17,6 +16,10 @@ const translations = {
     'nav.signupLogin': 'Sign up or log in',
     'nav.logout': 'Logout',
     'nav.welcome': 'Welcome',
+    'nav.notLoggedIn': 'Not logged in',
+    'nav.loginRequired': 'Login required',
+    'nav.loginAsHelper': 'Sign in as a helper',
+    'nav.loginAsClient': 'Sign in as a client',
 
     // Hero Section
     'hero.title': 'Find help for your household tasks',
@@ -98,6 +101,10 @@ const translations = {
     'nav.signupLogin': 'Iyandikishe cyangwa injire',
     'nav.logout': 'Sohoka',
     'nav.welcome': 'Murakaza neza',
+    'nav.notLoggedIn': 'Ntabwo winjiye',
+    'nav.loginRequired': 'Kwinjira birakenewe',
+    'nav.loginAsHelper': 'Injira nk\'umufasha',
+    'nav.loginAsClient': 'Injira nk\'umukiriya',
 
     // Hero Section
     'hero.title': 'Shakisha ubufasha mu mirimo y\'urugo',

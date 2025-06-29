@@ -1,108 +1,104 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { User, Users } from 'lucide-react';
+import { User, Users, Calendar } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onLogin: (email: string, password: string, role: 'client' | 'helper') => void;
-  onSignup: (email: string, password: string, name: string, role: 'client' | 'helper') => void;
+  onLogin: (email: string, password: string, role: 'client' | 'helper') => Promise<void>;
+  onSignup: (email: string, password: string, name: string, role: 'client' | 'helper') => Promise<void>;
+  defaultRole?: 'client' | 'helper';
 }
 
-const AuthModal = ({ isOpen, onClose, onLogin, onSignup }: AuthModalProps) => {
+const AuthModal = ({ isOpen, onClose, onLogin, onSignup, defaultRole }: AuthModalProps) => {
   const { t } = useLanguage();
-  const [mode, setMode] = useState<'login' | 'signup' | 'role-select'>('role-select');
-  const [selectedRole, setSelectedRole] = useState<'client' | 'helper' | null>(null);
+  const [mode, setMode] = useState<'role' | 'login' | 'signup'>('role');
+  const [selectedRole, setSelectedRole] = useState<'client' | 'helper'>(defaultRole || 'client');
   const [formData, setFormData] = useState({
+    name: '',
     email: '',
-    password: '',
-    name: ''
+    password: ''
   });
 
-  const handleRoleSelect = (role: 'client' | 'helper') => {
-    setSelectedRole(role);
-    setMode('login');
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedRole) return;
-
-    if (mode === 'login') {
-      onLogin(formData.email, formData.password, selectedRole);
+  useEffect(() => {
+    if (defaultRole) {
+      setSelectedRole(defaultRole);
+      setMode('login');
     } else {
-      onSignup(formData.email, formData.password, formData.name, selectedRole);
+      setMode('role');
     }
-    
-    // Reset form
-    setFormData({ email: '', password: '', name: '' });
-    setMode('role-select');
-    setSelectedRole(null);
-    onClose();
-  };
+  }, [defaultRole, isOpen]);
 
-  const resetModal = () => {
-    setMode('role-select');
-    setSelectedRole(null);
-    setFormData({ email: '', password: '', name: '' });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (mode === 'login') {
+        await onLogin(formData.email, formData.password, selectedRole);
+      } else {
+        await onSignup(formData.email, formData.password, formData.name, selectedRole);
+      }
+      onClose();
+      setFormData({ name: '', email: '', password: '' });
+      setMode('role');
+    } catch (error) {
+      console.error('Auth error:', error);
+    }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
-        {mode === 'role-select' && (
+      <DialogContent className="sm:max-w-[425px]">
+        {mode === 'role' && (
           <>
             <DialogHeader>
               <DialogTitle className="text-center text-2xl font-bold text-gray-900">
                 {t('auth.joinTitle')}
               </DialogTitle>
             </DialogHeader>
-            <div className="space-y-4">
-              <p className="text-center text-gray-600">
-                {t('auth.chooseRole')}
-              </p>
+            
+            <div className="mt-4 space-y-4">
+              <p className="text-center text-gray-600">{t('auth.chooseRole')}</p>
               
-              <div className="grid grid-cols-1 gap-4">
-                <Card 
-                  className="cursor-pointer hover:shadow-lg transition-shadow border-2 hover:border-orange-300"
-                  onClick={() => handleRoleSelect('client')}
-                >
-                  <CardHeader className="text-center pb-3">
-                    <div className="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <User className="text-orange-600" size={32} />
-                    </div>
-                    <CardTitle className="text-lg">{t('auth.client')}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="text-center">
-                    <p className="text-sm text-gray-600">
-                      {t('auth.clientDesc')}
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card 
-                  className="cursor-pointer hover:shadow-lg transition-shadow border-2 hover:border-orange-300"
-                  onClick={() => handleRoleSelect('helper')}
-                >
-                  <CardHeader className="text-center pb-3">
-                    <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <Users className="text-blue-600" size={32} />
-                    </div>
-                    <CardTitle className="text-lg">{t('auth.helper')}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="text-center">
-                    <p className="text-sm text-gray-600">
-                      {t('auth.helperDesc')}
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
+              <button
+                onClick={() => {
+                  setSelectedRole('client');
+                  setMode('login');
+                }}
+                className="w-full p-4 border rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-colors"
+              >
+                <div className="flex items-center space-x-4">
+                  <div className="bg-orange-100 p-3 rounded-full">
+                    <User className="w-6 h-6 text-orange-600" />
+                  </div>
+                  <div className="text-left">
+                    <h3 className="font-semibold text-gray-900">{t('auth.client')}</h3>
+                    <p className="text-sm text-gray-600">{t('auth.clientDesc')}</p>
+                  </div>
+                </div>
+              </button>
+              
+              <button
+                onClick={() => {
+                  setSelectedRole('helper');
+                  setMode('login');
+                }}
+                className="w-full p-4 border rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-colors"
+              >
+                <div className="flex items-center space-x-4">
+                  <div className="bg-orange-100 p-3 rounded-full">
+                    <Calendar className="w-6 h-6 text-orange-600" />
+                  </div>
+                  <div className="text-left">
+                    <h3 className="font-semibold text-gray-900">{t('auth.helper')}</h3>
+                    <p className="text-sm text-gray-600">{t('auth.helperDesc')}</p>
+                  </div>
+                </div>
+              </button>
             </div>
           </>
         )}
@@ -159,23 +155,22 @@ const AuthModal = ({ isOpen, onClose, onLogin, onSignup }: AuthModalProps) => {
               </Button>
               
               <div className="text-center space-y-2">
-                <Button
+                <button
                   type="button"
-                  variant="ghost"
                   onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
-                  className="text-orange-600 hover:text-orange-700"
+                  className="text-sm text-orange-600 hover:text-orange-700"
                 >
                   {mode === 'login' ? t('auth.noAccount') : t('auth.hasAccount')}
-                </Button>
-                
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={resetModal}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  {t('auth.backToRole')}
-                </Button>
+                </button>
+                {!defaultRole && (
+                  <button
+                    type="button"
+                    onClick={() => setMode('role')}
+                    className="block w-full text-sm text-gray-500 hover:text-gray-700"
+                  >
+                    {t('auth.backToRole')}
+                  </button>
+                )}
               </div>
             </form>
           </>
