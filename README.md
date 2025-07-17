@@ -2,6 +2,13 @@
 
 HouseHand is a modern platform connecting households with trusted helpers in Rwanda. The platform facilitates task management, bidding, and secure payments for domestic services.
 
+## Assingment 
+Video presentation at the root of this folder - Presentation.p4
+Tetsing Results at the root of this folder - Testing.md
+Testing Proof with different devices and users - https://docs.google.com/document/d/1Fx1tHVdNnOnrI9F_yNgjFdfaRddGG_S60gbvBhi_U_s/edit?usp=sharing
+deployment - househand.rw
+
+
 ## Features
 
 - **Task Management**: Clients can post tasks with detailed descriptions, budgets, and requirements
@@ -23,7 +30,7 @@ HouseHand is a modern platform connecting households with trusted helpers in Rwa
 
 ```sh
 # Clone the repository
-git clone <repository-url>
+git clone <https://github.com/takurandoro/househand>
 
 # Navigate to project directory
 cd househand
@@ -52,27 +59,6 @@ The application uses Supabase for database and authentication. Make sure you hav
 - **Internationalization**: i18next
 
 ## Development Tools
-
-### SQL Scripts (`scripts/sql/`)
-
-- `check_data.sql`: Verify task and helper data integrity
-- `delete_tasks.sql`: Safely remove tasks with all related data
-
-### TypeScript Scripts (`scripts/ts/`)
-
-- `check_helpers.ts`: Verify helper profiles and activity
-- `check_task_details.ts`: Validate task data and relationships
-
-To run these scripts:
-
-```bash
-# SQL Scripts
-psql -f scripts/sql/check_data.sql
-
-# TypeScript Scripts
-npx tsx scripts/ts/check_helpers.ts
-npx tsx scripts/ts/check_task_details.ts
-```
 
 ## Database Schema
 

@@ -51,8 +51,7 @@
 - **Performance:** The product performs well under test conditions, with no observed regressions or failures across different environments.
 - **Objectives Met:** The testing objectives outlined in the project proposal—robustness, correctness, and maintainability—have been met. All tests pass, and the suite is easy to extend for future features.
 
-### Missed Objectives (if any)
-- **Manual UI/UX Testing:** While automated tests cover logic and rendering, some aspects of user experience (such as visual layout and accessibility) require manual review or specialized tools (e.g., Lighthouse, axe-core).
+### Missed Objectives 
 - **Load/Stress Testing:** The current suite does not include automated load or stress tests for backend APIs or frontend performance under heavy usage.
 
 ### Conclusion
