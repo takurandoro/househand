@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background Circle -->
-  <circle cx="16" cy="16" r="16" fill="#FF6B00"/>
-  
-  <!-- Person Silhouette -->
-  <path d="M16 8C17.6569 8 19 9.34315 19 11C19 12.6569 17.6569 14 16 14C14.3431 14 13 12.6569 13 11C13 9.34315 14.3431 8 16 8Z" fill="white"/>
-  <path d="M20 20C20 17.7909 18.2091 16 16 16C13.7909 16 12 17.7909 12 20V24H20V20Z" fill="white"/>
-  
-  <!-- House Symbol -->
-  <path d="M24 12L16 6L8 12V24H12V16H20V24H24V12Z" fill="white" fill-opacity="0.3"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f97316" />
+      <stop offset="100%" style="stop-color:#c2410c" />
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="8" fill="url(#gradient)"/>
+  <path d="M16 8C13.8 8 12 9.8 12 12C12 14.2 13.8 16 16 16C18.2 16 20 14.2 20 12C20 9.8 18.2 8 16 8ZM16 18C12.7 18 10 19.4 10 21V24H22V21C22 19.4 19.3 18 16 18Z" fill="white"/>
 </svg> 

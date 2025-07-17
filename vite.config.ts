@@ -7,11 +7,12 @@ export default defineConfig({
   server: {
     host: "::",
     port: 8080,
+    strictPort: false,
   },
   plugins: [react()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(__dirname, "src"),  // Correct alias configuration
     },
   },
 });

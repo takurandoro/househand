@@ -1,260 +1,355 @@
-
-import Navigation from '@/components/Navigation';
-import TaskCard from '@/components/TaskCard';
-import SocialFundDisplay from '@/components/SocialFundDisplay';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { User, Calendar, Check, Book, Search, MapPin, Star } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { useTask } from '@/contexts/TaskContext';
+import React, { useState, useEffect } from 'react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+import { Plus, User, Calendar, CheckCircle, Shield, MapPin, Clock, Star, Globe, ChevronDown, Loader2 } from "lucide-react";
+import { useTranslation } from 'react-i18next';
+import { supabase } from '@/integrations/supabase/client';
+import ResponsiveHeader from '@/components/ResponsiveHeader';
 
 const Index = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchLocation, setSearchLocation] = useState('');
+  const { t, i18n } = useTranslation();
+  const { toast } = useToast();
   const navigate = useNavigate();
-  const { getAvailableTasks } = useTask();
-  
-  const featuredTasks = getAvailableTasks().slice(0, 3);
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const [isInputFocused, setIsInputFocused] = useState(false);
+  const [helpers, setHelpers] = useState<any[]>([]);
+  const [loadingHelpers, setLoadingHelpers] = useState(true);
 
-  const handleSearch = () => {
-    // Navigate to clients page with search parameters
-    const params = new URLSearchParams();
-    if (searchQuery) params.set('task', searchQuery);
-    if (searchLocation) params.set('location', searchLocation);
-    navigate(`/clients?${params.toString()}`);
+  // Sample tasks that will rotate
+  const sampleTasks = [
+    t('taskExamples.cleaning'),
+    t('taskExamples.gardening'),
+    t('taskExamples.painting'),
+    t('taskExamples.moving'),
+    t('taskExamples.repairs')
+  ];
+
+  // Text rotation effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTextIndex((prevIndex) => 
+        prevIndex === sampleTasks.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [sampleTasks.length]);
+
+  // Fetch helpers
+  useEffect(() => {
+    const fetchHelpers = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_type', 'helper')
+          .order('created_at', { ascending: false })
+          .limit(10); // Limit initial load
+
+        if (error) {
+          console.error('Error fetching helpers:', error);
+          setHelpers([]); // Set empty array instead of undefined
+          return;
+        }
+
+        setHelpers(data || []);
+      } catch (error) {
+        console.error('Error fetching helpers:', error);
+        setHelpers([]); // Set empty array instead of undefined
+      } finally {
+        setLoadingHelpers(false);
+      }
+    };
+
+    fetchHelpers();
+  }, []);
+
+  const handlePostTask = () => {
+    navigate('/login');
+    toast({
+      title: t('toasts.signInRequired'),
+      description: t('toasts.signInRequiredDesc'),
+    });
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
+  const handleFindWork = () => {
+    navigate('/find-work');
+  };
+
+  const handleGetHelp = () => {
+    navigate('/get-help');
+  };
+
+  const handleAbout = () => {
+    navigate('/about');
+  };
+
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
+  const handleSignup = () => {
+    navigate('/signup');
   };
 
   return (
     <div className="min-h-screen bg-white">
-      <Navigation />
-      
-      {/* Hero Section - Orange to Black gradient */}
-      <section className="relative bg-gradient-to-br from-orange-500 via-orange-700 to-black text-white">
-        <div className="absolute inset-0 bg-black bg-opacity-10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              Find help for your
-              <span className="block">household tasks</span>
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 opacity-90 leading-relaxed">
-              Connect with skilled helpers in Rwanda. Fair pricing, secure payments, 
-              and social benefits for everyone.
-            </p>
-            
-            {/* Search Bar */}
-            <div className="bg-white rounded-full p-2 shadow-lg max-w-2xl">
-              <div className="flex items-center">
-                <div className="flex-1 px-6 py-3">
-                  <div className="text-sm font-semibold text-gray-900">What do you need help with?</div>
-                  <input 
-                    type="text" 
-                    placeholder="Cleaning, washing, yard work..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    className="w-full text-gray-700 placeholder-gray-500 bg-transparent border-none outline-none"
-                  />
+      {/* Responsive Navigation Header */}
+      <ResponsiveHeader 
+        onFindWork={handleFindWork}
+        onGetHelp={handleGetHelp}
+        onAbout={handleAbout}
+        onLogin={handleLogin}
+        onSignup={handleSignup}
+      />
+
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-black via-gray-900 to-orange-600 text-white py-12 md:py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-orange-900/60"></div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 md:mb-8 bg-gradient-to-r from-white to-orange-200 bg-clip-text text-transparent">
+            {t('hero.title')}
+          </h1>
+          <p className="text-lg md:text-xl text-orange-100 mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed px-4">
+            {t('hero.subtitle')}
+          </p>
+
+          {/* Post Task Search Bar */}
+          <div className="flex justify-center mb-8">
+            <div className="bg-white rounded-2xl md:rounded-full shadow-2xl p-3 md:p-4 max-w-4xl w-full mx-4 cursor-text hover:shadow-3xl transition-all duration-300">
+              <div className="flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-4">
+                <div className="flex-1 px-4 w-full">
+                  <div className="text-left">
+                    <p className="text-sm text-gray-600 font-medium mb-1">{t('hero.searchPlaceholder')}</p>
+                    <input
+                      type="text"
+                      className="w-full text-base text-gray-700 outline-none border-none bg-transparent placeholder-gray-400"
+                      placeholder={sampleTasks[currentTextIndex]}
+                      onFocus={() => setIsInputFocused(true)}
+                      onBlur={() => setIsInputFocused(false)}
+                      onChange={() => {}}
+                    />
+                  </div>
                 </div>
-                <div className="w-px h-8 bg-gray-300"></div>
-                <div className="flex-1 px-6 py-3">
-                  <div className="text-sm font-semibold text-gray-900">Location</div>
-                  <input 
-                    type="text" 
-                    placeholder="Kigali, Rwanda"
-                    value={searchLocation}
-                    onChange={(e) => setSearchLocation(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    className="w-full text-gray-700 placeholder-gray-500 bg-transparent border-none outline-none"
-                  />
+                <div className="hidden md:block border-l border-gray-200 h-12"></div>
+                <div className="flex-1 px-4 w-full">
+                  <div className="text-left">
+                    <p className="text-sm text-gray-600 font-medium mb-1">{t('hero.location')}</p>
+                    <input
+                      type="text"
+                      className="w-full text-base text-gray-700 outline-none border-none bg-transparent placeholder-gray-400"
+                      placeholder={t('hero.locationText')}
+                      onFocus={() => setIsInputFocused(true)}
+                      onBlur={() => setIsInputFocused(false)}
+                      onChange={() => {}}
+                    />
+                  </div>
                 </div>
-                <Button 
-                  size="lg" 
-                  onClick={handleSearch}
-                  className="bg-gradient-to-r from-orange-500 to-orange-700 hover:from-orange-600 hover:to-orange-800 rounded-full h-14 w-14 p-0"
+                <div 
+                  onClick={handlePostTask}
+                  className="bg-gradient-to-r from-orange-500 to-orange-700 hover:from-orange-600 hover:to-orange-800 rounded-full p-3 md:p-4 shadow-lg cursor-pointer transition-transform transform hover:scale-105 w-full md:w-auto flex items-center justify-center"
                 >
-                  <Search size={20} />
-                </Button>
+                  <Plus className="w-6 h-6 text-white" />
+                  <span className="ml-2 md:hidden text-white font-medium">Post Task</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Quick Actions */}
-      <section className="py-16 border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-8">
-            <Link to="/clients" className="group">
-              <Card className="h-64 relative overflow-hidden hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1">
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-400 via-orange-600 to-black"></div>
-                <CardContent className="relative h-full flex flex-col justify-end p-8 text-white">
-                  <User size={48} className="mb-4 opacity-80" />
-                  <h3 className="text-2xl font-bold mb-2">I need help</h3>
-                  <p className="text-orange-100">Post your household tasks and get help from verified helpers</p>
-                </CardContent>
-              </Card>
-            </Link>
-            
-            <Link to="/helpers" className="group">
-              <Card className="h-64 relative overflow-hidden hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1">
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-500 via-orange-700 to-black"></div>
-                <CardContent className="relative h-full flex flex-col justify-end p-8 text-white">
-                  <Calendar size={48} className="mb-4 opacity-80" />
-                  <h3 className="text-2xl font-bold mb-2">I want to help</h3>
-                  <p className="text-orange-100">Find household tasks in your area and earn fair income</p>
-                </CardContent>
-              </Card>
-            </Link>
+      {/* Service Cards */}
+      <section className="py-12 md:py-20 bg-gradient-to-b from-gray-50 to-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
+            <Card 
+              onClick={handleGetHelp}
+              className="bg-gradient-to-br from-black via-gray-800 to-orange-600 text-white border-none p-6 md:p-10 cursor-pointer hover:scale-105 transition-all duration-300 shadow-2xl"
+            >
+              <CardHeader className="p-0 mb-6">
+                <User className="w-12 h-12 md:w-16 md:h-16 mb-4 md:mb-6 text-orange-200" />
+                <CardTitle className="text-2xl md:text-3xl font-bold text-white mb-3">{t('services.needHelp')}</CardTitle>
+                <CardDescription className="text-orange-100 text-base md:text-lg leading-relaxed">
+                  {t('services.needHelpDesc')}
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card 
+              onClick={handleFindWork}
+              className="bg-gradient-to-br from-orange-600 via-orange-700 to-black text-white border-none p-6 md:p-10 cursor-pointer hover:scale-105 transition-all duration-300 shadow-2xl"
+            >
+              <CardHeader className="p-0 mb-6">
+                <Calendar className="w-12 h-12 md:w-16 md:h-16 mb-4 md:mb-6 text-orange-200" />
+                <CardTitle className="text-2xl md:text-3xl font-bold text-white mb-3">{t('services.wantToHelp')}</CardTitle>
+                <CardDescription className="text-orange-100 text-base md:text-lg leading-relaxed">
+                  {t('services.wantToHelpDesc')}
+                </CardDescription>
+              </CardHeader>
+            </Card>
           </div>
         </div>
       </section>
 
-      {/* Featured Tasks */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">
-              Tasks near you
+      {/* Helpers Near You Section */}
+      <section className="py-12 md:py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 md:mb-12 space-y-4 md:space-y-0">
+            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-black to-orange-600 bg-clip-text text-transparent">
+              {t('helpers.title')}
             </h2>
-            <Link to="/helpers">
-              <Button variant="outline" className="border-gray-300">
-                Show all
-              </Button>
-            </Link>
+            <Button 
+              variant="outline" 
+              className="text-orange-600 border-orange-600 hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 border-2 w-full md:w-auto"
+              onClick={() => navigate('/find-work')}
+            >
+              {t('helpers.viewAll')}
+            </Button>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-6">
-            {featuredTasks.map((task, index) => (
-              <TaskCard 
-                key={task.id} 
-                title={task.title}
-                description={task.description}
-                effort={task.effort}
-                price={task.budget}
-                location={task.location}
-                postedTime={`${Math.floor((Date.now() - task.createdAt.getTime()) / (1000 * 60 * 60))} hours ago`}
-              />
-            ))}
-          </div>
+          {loadingHelpers ? (
+            <div className="flex justify-center items-center py-16">
+              <Loader2 className="w-8 h-8 text-orange-600 animate-spin" />
+            </div>
+          ) : helpers.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              {helpers.slice(0, 6).map((helper) => (
+                <Card key={helper.id} className="bg-gradient-to-br from-black via-gray-800 to-orange-600 text-white border-none p-6 md:p-10 cursor-pointer hover:scale-105 transition-all duration-300 shadow-2xl">
+                  <CardHeader className="p-0 mb-6">
+                    <User className="w-12 h-12 md:w-16 md:h-16 mb-4 md:mb-6 text-orange-200" />
+                    <CardTitle className="text-2xl md:text-3xl font-bold text-white mb-3">{helper.name}</CardTitle>
+                    <CardDescription className="text-orange-100 text-base md:text-lg leading-relaxed">
+                      {helper.bio}
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <div className="w-20 h-20 bg-gradient-to-r from-orange-100 to-orange-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                <User className="w-10 h-10 text-orange-600" />
+              </div>
+              <h3 className="text-2xl font-semibold text-gray-800 mb-4">{t('helpers.noHelpers')}</h3>
+              <p className="text-gray-600 max-w-md mx-auto px-4">
+                {t('helpers.noHelpersDesc')}
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Social Impact */}
-      <section className="py-16 bg-gradient-to-r from-orange-50 via-gray-50 to-gray-100">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-black bg-clip-text text-transparent mb-4">
-              Building a better future together
-            </h2>
-            <p className="text-lg text-gray-600">
-              Every task helps formalize domestic work and provides social benefits
-            </p>
-          </div>
-          <SocialFundDisplay />
+      {/* Social Impact Section */}
+      <section className="py-12 md:py-20 bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-black to-orange-800 bg-clip-text text-transparent mb-6">{t('impact.title')}</h2>
+          <p className="text-base md:text-lg text-gray-700 mb-8 md:mb-12 max-w-2xl mx-auto px-4">
+            {t('impact.subtitle')}
+          </p>
+
+          <Card className="max-w-4xl mx-auto bg-white/80 backdrop-blur-sm border-orange-300 shadow-2xl">
+            <CardHeader className="p-6 md:p-8">
+              <div className="flex flex-col md:flex-row items-center justify-center mb-6">
+                <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-orange-700 rounded-full flex items-center justify-center mb-4 md:mb-0 md:mr-4">
+                  <CheckCircle className="w-6 h-6 text-white" />
+                </div>
+                <CardTitle className="text-xl md:text-2xl bg-gradient-to-r from-black to-orange-800 bg-clip-text text-transparent text-center md:text-left">{t('impact.contributionTitle')}</CardTitle>
+              </div>
+              <CardDescription className="text-sm md:text-base text-gray-700 leading-relaxed px-4">
+                {t('impact.contributionDesc')}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6 md:p-8">
+              <div className="bg-gradient-to-r from-orange-100 to-orange-200 rounded-xl p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <div className="text-center">
+                  <p className="text-sm text-gray-600 mb-3">{t('impact.totalContributions')}</p>
+                  <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">0 RWF</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-sm text-gray-600 mb-3">{t('impact.helpersBenefiting')}</p>
+                  <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">0 people</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
-      {/* Trust & Safety */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-black bg-clip-text text-transparent mb-4">
-              Your safety is our priority
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              All helpers are verified and tasks are covered by our guarantee
-            </p>
-          </div>
+      {/* Safety Section */}
+      <section className="py-12 md:py-20 bg-gradient-to-br from-black via-gray-900 to-orange-600 text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">{t('safety.title')}</h2>
+          <p className="text-base md:text-lg text-orange-100 mb-8 md:mb-12 max-w-2xl mx-auto px-4">
+            {t('safety.subtitle')}
+          </p>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="bg-gradient-to-br from-orange-100 to-orange-200 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Check className="text-orange-600" size={32} />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Verified helpers</h3>
-              <p className="text-gray-600">
-                Background checks and ID verification for all helpers
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="bg-gradient-to-br from-orange-100 to-orange-200 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Star className="text-orange-600" size={32} />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Rated & reviewed</h3>
-              <p className="text-gray-600">
-                Community ratings help you choose the right helper
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="bg-gradient-to-br from-orange-100 to-orange-200 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Book className="text-orange-600" size={32} />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Secure payments</h3>
-              <p className="text-gray-600">
-                Payments held safely until your task is completed
-              </p>
+          <div className="flex justify-center">
+            <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-r from-orange-500 to-orange-700 rounded-full flex items-center justify-center shadow-2xl">
+              <Shield className="w-8 h-8 md:w-10 md:h-10 text-white" />
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-br from-gray-900 via-black to-black text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-2 rounded-lg">
-                  <User size={20} />
+      <footer className="bg-gradient-to-r from-black via-gray-900 to-orange-600 text-white py-8 md:py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            <div className="col-span-1 md:col-span-2 lg:col-span-1">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center">
+                  <User className="w-5 h-5 text-white" />
                 </div>
                 <span className="text-xl font-bold">HouseHand</span>
               </div>
-              <p className="text-gray-400">
-                Formalizing domestic work and creating opportunities in Rwanda.
+              <p className="text-orange-100 text-sm leading-relaxed">
+                {t('footer.description')}
               </p>
             </div>
             
             <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>Help Center</li>
-                <li>Safety Information</li>
-                <li>Contact Us</li>
+              <h3 className="font-semibold mb-4 text-orange-200">{t('footer.platform')}</h3>
+              <ul className="space-y-2 text-sm text-orange-100">
+                <li><button onClick={handleGetHelp} className="hover:text-white transition-colors">{t('footer.postTask')}</button></li>
+                <li><button onClick={handleFindWork} className="hover:text-white transition-colors">{t('footer.findWork')}</button></li>
+                <li><button className="hover:text-white transition-colors">{t('footer.safety')}</button></li>
+                <li><button className="hover:text-white transition-colors">{t('footer.howItWorks')}</button></li>
               </ul>
             </div>
-            
+
             <div>
-              <h4 className="font-semibold mb-4">Community</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>Guidelines</li>
-                <li>Trust & Safety</li>
-                <li>Accessibility</li>
+              <h3 className="font-semibold mb-4 text-orange-200">{t('footer.support')}</h3>
+              <ul className="space-y-2 text-sm text-orange-100">
+                <li><button className="hover:text-white transition-colors">{t('footer.helpCenter')}</button></li>
+                <li><button className="hover:text-white transition-colors">{t('footer.contactUs')}</button></li>
+                <li><button className="hover:text-white transition-colors">{t('footer.terms')}</button></li>
+                <li><button className="hover:text-white transition-colors">{t('footer.privacy')}</button></li>
               </ul>
             </div>
-            
+
             <div>
-              <h4 className="font-semibold mb-4">HouseHand</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>About Us</li>
-                <li>Careers</li>
-                <li>Press</li>
+              <h3 className="font-semibold mb-4 text-orange-200">{t('footer.community')}</h3>
+              <ul className="space-y-2 text-sm text-orange-100">
+                <li><button onClick={handleAbout} className="hover:text-white transition-colors">{t('footer.aboutUs')}</button></li>
+                <li><button className="hover:text-white transition-colors">{t('footer.socialImpact')}</button></li>
+                <li><button className="hover:text-white transition-colors">{t('footer.blog')}</button></li>
+                <li><button className="hover:text-white transition-colors">{t('footer.careers')}</button></li>
               </ul>
             </div>
           </div>
-          
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 HouseHand. Supporting formal employment in Rwanda.</p>
+
+          <div className="border-t border-orange-300/30 mt-6 md:mt-8 pt-6 md:pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p className="text-orange-100 text-sm text-center md:text-left">
+              {t('footer.copyright')}
+            </p>
+            <div className="flex space-x-4">
+              <button className="text-orange-100 hover:text-white transition-colors">
+                <Globe className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
       </footer>

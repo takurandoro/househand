@@ -1,52 +1,29 @@
-# House Hand - Formalizing the Informal Sector in Rwanda
+# HouseHand
 
-## Project Overview
-House Hand is a capstone project developed by Takura Ndoro as part of research on formalizing the informal sector in Rwanda. This platform aims to bridge the gap between skilled workers and clients, providing a structured and formal approach to service delivery in the informal sector.
-
-## Important Links
-- **GitHub Repository**: [github.com/takurandoro/househand](https://github.com/takurandoro/househand)
-- **Design Documentation**: [Figma Designs](https://www.figma.com/design/XyulzlRuFtR07NSzWhJmbD/Takura-Munyaradzi-Ndoro-s-team-library?node-id=0-1&t=f9NoNwRW71NFWMjg-1)
-- **Live Demo**: [househand.netlify.app](https://6845f3a17619e30008bc77ad--househand.netlify.app/)
-
-## Prototype Demonstrations
-Watch my prototype walkthrough videos to see House Hand in action: (Sunnative Submission)
-- [Prototype Demo Part 1](https://www.loom.com/share/02addba1514f4f39b4c77193109babe5?sid=568c5dba-2636-47e9-9bac-0f0771952ed4) - Core features and user interface
-- [Prototype Demo Part 2](https://www.loom.com/share/e31776b3a2034e29ae4b5fbd618f623b) - Advanced features and interactions
-
-## Project Description
-House Hand serves as a digital marketplace that connects skilled workers (helpers) with clients seeking various services. The platform focuses on:
-- Creating formal employment opportunities
-- Ensuring service quality and accountability
-- Providing a structured payment system
-- Building trust between service providers and clients
-- Contributing to Rwanda's economic development
+HouseHand is a modern platform connecting households with trusted helpers in Rwanda. The platform facilitates task management, bidding, and secure payments for domestic services.
 
 ## Features
-- User authentication and profile management
-- Service provider listings and search
-- Client booking and scheduling system
-- Rating and review system
-- Secure payment processing
-- Multi-language support
 
-## Technology Stack
-This project is built using modern web technologies:
-- React with TypeScript for frontend development
-- Vite for fast development and building
-- Tailwind CSS for styling
-- shadcn-ui for UI components
-- React Query for data fetching and state management
+- **Task Management**: Clients can post tasks with detailed descriptions, budgets, and requirements
+- **Helper Marketplace**: Skilled helpers can browse and bid on available tasks
+- **Secure Bidding System**: Transparent bidding process with proposed prices and helper qualifications
+- **User Profiles**: Detailed profiles for both clients and helpers with ratings and reviews
+- **Multi-language Support**: Available in English, French, and Kinyarwanda
+- **Secure Payments**: Built-in payment processing with helper earnings tracking
+- **Real-time Notifications**: Stay updated on bids, task status changes, and messages
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- npm or yarn package manager
+
+- Node.js 18+ and npm
+- PostgreSQL (via Supabase)
 
 ### Installation
-```bash
+
+```sh
 # Clone the repository
-git clone https://github.com/takurandoro/househand.git
+git clone <repository-url>
 
 # Navigate to project directory
 cd househand
@@ -58,21 +35,65 @@ npm install
 npm run dev
 ```
 
-## Development
-The project follows modern React development practices and is structured for maintainability and scalability. Key directories include:
-- `/src/components` - Reusable UI components
-- `/src/pages` - Main application pages
-- `/src/contexts` - React context providers
-- `/src/hooks` - Custom React hooks
-- `/src/lib` - Utility functions and configurations
+### Environment Setup
 
-## Author
-- **Takura Ndoro** - *Developer and Researcher*
+The application uses Supabase for database and authentication. Make sure you have the following environment variables set up:
 
-## License
-This project is part of academic research and is not licensed for commercial use without permission.
+- `SUPABASE_URL`: Your Supabase project URL
+- `SUPABASE_ANON_KEY`: Your Supabase anonymous key
 
-## Acknowledgments
-- Research supervisors and advisors
-- The Rwandan government's initiatives for formalizing the informal sector
-- All contributors to the open-source libraries used in this project
+## Tech Stack
+
+- **Frontend**: React, TypeScript, Vite
+- **UI Components**: shadcn/ui, Tailwind CSS
+- **State Management**: React Query
+- **Database**: PostgreSQL (Supabase)
+- **Authentication**: Supabase Auth
+- **Internationalization**: i18next
+
+## Development Tools
+
+### SQL Scripts (`scripts/sql/`)
+
+- `check_data.sql`: Verify task and helper data integrity
+- `delete_tasks.sql`: Safely remove tasks with all related data
+
+### TypeScript Scripts (`scripts/ts/`)
+
+- `check_helpers.ts`: Verify helper profiles and activity
+- `check_task_details.ts`: Validate task data and relationships
+
+To run these scripts:
+
+```bash
+# SQL Scripts
+psql -f scripts/sql/check_data.sql
+
+# TypeScript Scripts
+npx tsx scripts/ts/check_helpers.ts
+npx tsx scripts/ts/check_task_details.ts
+```
+
+## Database Schema
+
+Key tables in the system:
+- `profiles`: User profiles for both clients and helpers
+- `tasks`: Task listings with details and status
+- `bids`: Helper bids on tasks
+- `helper_reviews`: Client reviews of helpers
+- `helper_earnings`: Track helper payments and withdrawals
+
+## Security
+
+- Row Level Security (RLS) enabled on all tables
+- Secure authentication via Supabase
+- Protected API endpoints
+- Secure payment processing
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request

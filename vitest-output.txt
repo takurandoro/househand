@@ -1,0 +1,204 @@
+
+ RUN  v3.2.4 /Users/takura/Desktop/househand-19931048
+
+stdout | src/tests/supabaseClient.test.ts > getUserMetadata > returns nulls for missing user
+getUserMetadata input: [1mnull[22m
+No user or metadata, returning null values
+
+stdout | src/tests/supabaseClient.test.ts > getUserMetadata > returns nulls for missing metadata
+getUserMetadata input: { id: [32m'1'[39m, raw_user_meta_data: [1mnull[22m }
+No user or metadata, returning null values
+
+stdout | src/tests/supabaseClient.test.ts > getUserMetadata > returns transformed metadata
+getUserMetadata input: {
+  id: [32m'1'[39m,
+  raw_user_meta_data: { full_name: [32m'A'[39m, avatar_url: [32m'u'[39m, location: [32m'L'[39m }
+}
+Raw metadata: { full_name: [32m'A'[39m, avatar_url: [32m'u'[39m, location: [32m'L'[39m }
+Transformed metadata: { id: [32m'1'[39m, full_name: [32m'A'[39m, avatar_url: [32m'u'[39m, location: [32m'L'[39m }
+
+ ✓ src/tests/supabaseClient.test.ts > getStorageUrl > returns null for null path 35ms
+ ✓ src/tests/supabaseClient.test.ts > getStorageUrl > returns DiceBear url as is 15ms
+ ✓ src/tests/supabaseClient.test.ts > getStorageUrl > returns http url as is 18ms
+ × src/tests/supabaseClient.test.ts > getStorageUrl > handles /storage/v1/ path 83ms
+   → expected 'https://phbdfpsherbapwzjfohq.supabase…' to be 'https://supabase.io/storage/v1/abc' // Object.is equality
+ × src/tests/supabaseClient.test.ts > getStorageUrl > handles / relative path 8ms
+   → expected 'https://phbdfpsherbapwzjfohq.supabase…' to be 'https://supabase.io/storage/v1/object…' // Object.is equality
+ × src/tests/supabaseClient.test.ts > getStorageUrl > handles bucket path 8ms
+   → expected 'https://phbdfpsherbapwzjfohq.supabase…' to be 'https://supabase.io/storage/v1/object…' // Object.is equality
+ ✓ src/tests/supabaseClient.test.ts > getUserMetadata > returns nulls for missing user 12ms
+ ✓ src/tests/supabaseClient.test.ts > getUserMetadata > returns nulls for missing metadata 2ms
+ ✓ src/tests/supabaseClient.test.ts > getUserMetadata > returns transformed metadata 11ms
+ ✓ src/tests/supabaseClient.test.ts > checkConnectivity > returns true if fetch ok 47ms
+ ✓ src/tests/supabaseClient.test.ts > checkConnectivity > returns false if fetch not ok 5ms
+ ✓ src/tests/supabaseClient.test.ts > checkConnectivity > returns false on fetch error 10ms
+ ✓ src/tests/supabaseClient.test.ts > retryOperation > returns result if operation succeeds 22ms
+ ✓ src/tests/supabaseClient.test.ts > retryOperation > retries on failure and succeeds 40ms
+ ✓ src/tests/supabaseClient.test.ts > retryOperation > throws after max retries 69ms
+ ✓ src/tests/supabaseClient.test.ts > retryOperation > throws if offline 14ms
+ ✓ src/tests/useBids.test.tsx > useBids hooks > fetches bids by task 539ms
+ × src/tests/useBids.test.tsx > useBids hooks > handles error when fetching bids by task 352ms
+   → expected true to be false // Object.is equality
+ ✓ src/tests/useBids.test.tsx > useBids hooks > fetches bids by helper 167ms
+ ✓ src/tests/useTasks.test.tsx > useTasks hooks > fetches tasks successfully 1241ms
+ × src/tests/useBids.test.tsx > useBids hooks > handles error when fetching bids by helper 65ms
+   → expected true to be false // Object.is equality
+ ✓ src/tests/useBids.test.tsx > useBids hooks > handles bid mutation (success) 64ms
+ ✓ src/tests/useBids.test.tsx > useBids hooks > handles error on bid mutation 36ms
+ × src/tests/useTasks.test.tsx > useTasks hooks > handles error when fetching tasks 179ms
+   → expected true to be false // Object.is equality
+ ✓ src/tests/useClientAnalytics.test.tsx > useClientAnalytics > returns analytics data for a user 1142ms
+ ✓ src/tests/useTasks.test.tsx > useTasks hooks > fetches a single task 122ms
+ × src/tests/useClientAnalytics.test.tsx > useClientAnalytics > handles supabase error 191ms
+   → Cannot read properties of null (reading 'message')
+ × src/tests/useTasks.test.tsx > useTasks hooks > handles error when fetching a single task 101ms
+   → expected true to be false // Object.is equality
+ ✓ src/tests/useTasks.test.tsx > useTasks hooks > updates task status (mutation success) 81ms
+ × src/tests/supabaseClient.test.ts > createTask > creates and fetches task 3128ms
+   → promise rejected "Error: No internet connection" instead of resolving
+ ✓ src/tests/useTasks.test.tsx > useTasks hooks > handles error on updateTaskStatus 72ms
+ ✓ src/tests/useTasks.test.tsx > useTasks hooks > creates a task (mutation success) 17ms
+ ✓ src/tests/useTasks.test.tsx > useTasks hooks > handles error on createTask 54ms
+ × src/tests/supabaseClient.test.ts > createTask > throws on insert error 3296ms
+   → expected Error: No internet connection to deeply equal { message: 'fail' }
+ ✓ src/tests/FindWork.test.tsx > FindWork Page > renders the hero section 3809ms
+ × src/tests/supabaseClient.test.ts > createTask > throws on fetch error 3213ms
+   → expected Error: No internet connection to deeply equal { message: 'fail' }
+ ✓ src/tests/CreateTaskDialog.test.tsx > CreateTaskDialog > renders without crashing 4655ms
+ × src/tests/HelperDashboard.test.tsx > HelperDashboard > renders without crashing 7916ms
+   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ × src/tests/useClientDetails.test.tsx > useClientDetails > fetches client details successfully 388ms
+   → Cannot find module '@/integrations/supabase/client'
+Require stack:
+- /Users/takura/Desktop/househand-19931048/src/tests/useClientDetails.test.tsx
+ × src/tests/useClientDetails.test.tsx > useClientDetails > handles error when fetching client details 2ms
+   → Cannot find module '@/integrations/supabase/client'
+Require stack:
+- /Users/takura/Desktop/househand-19931048/src/tests/useClientDetails.test.tsx
+ ✓ src/tests/useClientDetails.test.tsx > useClientDetails > resets state on dialog close 519ms
+ ✓ src/tests/data.test.ts > checkTaskData > returns correct counts 200ms
+ ✓ src/tests/data.test.ts > checkTaskData > throws on bids error 14ms
+ ✓ src/tests/data.test.ts > checkTaskData > throws on completed error 1ms
+ × src/tests/loading.test.ts > loadTasksForView > loads available tasks for helper 289ms
+   → Cannot read properties of undefined (reading 'in')
+ ✓ src/tests/loading.test.ts > loadTasksForView > throws on error 150ms
+ ✓ src/tests/queries.test.ts > loadTasksForView (queries) > loads client tasks 40ms
+ × src/tests/queries.test.ts > loadTasksForView (queries) > loads helper available tasks 546ms
+   → query.ilike is not a function
+ × src/tests/queries.test.ts > loadTasksForView (queries) > filters my_bids after fetch 141ms
+   → query.neq is not a function
+ × src/tests/queries.test.ts > loadTasksForView (queries) > throws on error 79ms
+   → expected TypeError: query.eq(...).order is not a f… to deeply equal { message: 'error' }
+ × src/tests/GetHelp.test.tsx > GetHelp Page > renders the hero section 5467ms
+   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ × src/tests/BidDialog.test.tsx > BidDialog > renders without crashing 6079ms
+   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ × src/tests/Index.test.tsx > Index Page > renders the hero title 6072ms
+   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ✓ src/tests/ClientDashboard.test.tsx > ClientDashboard > renders loading spinner 4910ms
+ ✓ src/tests/WithdrawalDialog.test.tsx > WithdrawalDialog > renders without crashing 5203ms
+stdout | src/tests/useNotifications.test.tsx > useNotifications > fetches notifications
+Successfully subscribed to notifications
+
+stdout | src/tests/useNotifications.test.tsx > useNotifications > fetches notifications
+Successfully subscribed to notifications
+
+stdout | src/tests/useNotifications.test.tsx > useNotifications > marks a notification as read
+Successfully subscribed to notifications
+
+ ✓ src/tests/useNotifications.test.tsx > useNotifications > fetches notifications 1678ms
+stdout | src/tests/useNotifications.test.tsx > useNotifications > marks all notifications as read
+Successfully subscribed to notifications
+
+stdout | src/tests/useNotifications.test.tsx > useNotifications > marks all notifications as read
+Successfully subscribed to notifications
+
+ ✓ src/tests/useNotifications.test.tsx > useNotifications > marks a notification as read 123ms
+stdout | src/tests/useNotifications.test.tsx > useNotifications > updates notification preferences
+Successfully subscribed to notifications
+
+stdout | src/tests/useNotifications.test.tsx > useNotifications > updates notification preferences
+Successfully subscribed to notifications
+
+ ✓ src/tests/useNotifications.test.tsx > useNotifications > marks all notifications as read 99ms
+stdout | src/tests/useNotifications.test.tsx > useNotifications > handles error on markAsRead
+Successfully subscribed to notifications
+
+stdout | src/tests/useNotifications.test.tsx > useNotifications > handles error on markAsRead
+Successfully subscribed to notifications
+
+ ✓ src/tests/useNotifications.test.tsx > useNotifications > updates notification preferences 279ms
+stdout | src/tests/useNotifications.test.tsx > useNotifications > handles error on markAsRead
+Successfully subscribed to notifications
+
+stdout | src/tests/useNotifications.test.tsx > useNotifications > handles error on markAllAsRead
+Successfully subscribed to notifications
+
+ ✓ src/tests/useNotifications.test.tsx > useNotifications > handles error on markAsRead 454ms
+stdout | src/tests/useNotifications.test.tsx > useNotifications > handles error on updatePreferences
+Successfully subscribed to notifications
+
+stdout | src/tests/useNotifications.test.tsx > useNotifications > handles error on updatePreferences
+Successfully subscribed to notifications
+
+ ✓ src/tests/useNotifications.test.tsx > useNotifications > handles error on markAllAsRead 196ms
+stdout | src/tests/useNotifications.test.tsx
+Successfully subscribed to notifications
+
+ ✓ src/tests/useNotifications.test.tsx > useNotifications > handles error on updatePreferences 121ms
+ ✓ src/tests/About.test.tsx > About Page > renders the About HouseHand heading 3039ms
+ ✓ src/tests/About.test.tsx > About Page > renders the Our Mission section 800ms
+ ✓ src/tests/TaskFilters.test.tsx > TaskFilters > renders without crashing 3147ms
+ ✓ src/tests/ToastProvider.test.tsx > Toaster > renders without crashing 2680ms
+ ✓ src/tests/TaskReviewDialog.test.tsx > TaskReviewDialog > renders without crashing 4858ms
+ ✓ src/tests/NotificationBell.test.tsx > NotificationBell > renders without crashing 652ms
+ ✓ src/tests/Signup.test.tsx > Signup Page > renders the signup form 1800ms
+ ✓ src/tests/NotFound.test.tsx > NotFound Page > renders the not found message 3718ms
+ ✓ src/tests/HelperSidebar.test.tsx > HelperSidebar > renders without crashing 2593ms
+ ✓ src/tests/AnalyticsOverview.test.tsx > AnalyticsOverview > renders without crashing 2470ms
+ ✓ src/tests/EarningsDisplay.test.tsx > EarningsDisplay > renders without crashing 3387ms
+ ✓ src/tests/Login.test.tsx > Login Page > renders the login form 1334ms
+ ✓ src/tests/ResponsiveHeader.test.tsx > ResponsiveHeader > renders without crashing 1282ms
+ ✓ src/tests/AnalyticsCharts.test.tsx > AnalyticsCharts > renders without crashing 1455ms
+ ✓ src/tests/Dashboard.test.tsx > Dashboard Page > renders loading state 662ms
+ ✓ src/tests/HelperCard.test.tsx > HelperCard > renders helper name, location, and bio 3178ms
+ ✓ src/tests/use-mobile.test.tsx > useIsMobile > returns true if window width is less than 768 895ms
+ ✓ src/tests/use-mobile.test.tsx > useIsMobile > returns false if window width is 768 or more 24ms
+ ✓ src/tests/card.test.tsx > Card > renders children 1906ms
+ ✓ src/tests/handlers.test.ts > handleSupabaseError > returns ValidationError for unique_violation 62ms
+ ✓ src/tests/handlers.test.ts > handleSupabaseError > returns ValidationError for foreign_key_violation 3ms
+ ✓ src/tests/handlers.test.ts > handleSupabaseError > returns ValidationError for undefined_column 3ms
+ ✓ src/tests/handlers.test.ts > handleSupabaseError > returns ValidationError for invalid_text_representation 5ms
+ ✓ src/tests/handlers.test.ts > handleSupabaseError > returns ValidationError for not_null_violation 95ms
+ ✓ src/tests/handlers.test.ts > handleSupabaseError > returns AppError for unknown code 187ms
+ ✓ src/tests/handlers.test.ts > handleAuthError > returns AuthenticationError for JWT error 3ms
+ ✓ src/tests/handlers.test.ts > handleAuthError > returns ValidationError for credentials error 1ms
+ ✓ src/tests/handlers.test.ts > handleAuthError > returns AppError for other errors 34ms
+ ✓ src/tests/handlers.test.ts > handleApiError > returns the same AppError if passed 8ms
+ ✓ src/tests/handlers.test.ts > handleApiError > returns NotFoundError for not found message 22ms
+ ✓ src/tests/handlers.test.ts > handleApiError > returns AuthenticationError for permission message 112ms
+ ✓ src/tests/handlers.test.ts > handleApiError > returns ValidationError for validation message 5ms
+ ✓ src/tests/handlers.test.ts > handleApiError > returns AppError for generic Error 191ms
+ ✓ src/tests/handlers.test.ts > handleApiError > returns AppError for unknown error type 92ms
+ ✓ src/tests/MobileNavigation.test.tsx > MobileNavigation > renders without crashing 1444ms
+ ✓ src/tests/BidManagement.test.tsx > BidManagement > renders without crashing 1350ms
+ ✓ src/tests/use-toast.test.ts > toast > calls sonner.toast for default variant 63ms
+ ✓ src/tests/use-toast.test.ts > toast > calls sonner.toast.error for destructive variant 3ms
+ ✓ src/tests/use-toast.test.ts > toast > calls sonner.toast.success for success variant 10ms
+ ✓ src/tests/use-toast.test.ts > toast > calls sonner.toast.warning for warning variant 55ms
+ ✓ src/tests/use-toast.test.ts > toast > calls sonner.toast.info for info variant 6ms
+ ✓ src/tests/use-toast.test.ts > useToast > returns toast, dismiss, and dismissAll 53ms
+ ✓ src/tests/TaskList.test.tsx > TaskList > renders without crashing 1159ms
+ ✓ src/tests/TaskPaymentDialog.test.tsx > TaskPaymentDialog > renders nothing if no task is provided 598ms
+ ✓ src/tests/HelperTaskList.test.tsx > TaskList (Helper) > renders without crashing 966ms
+
+ Test Files  22 failed | 30 passed (52)
+      Tests  21 failed | 86 passed (107)
+     Errors  4 errors
+   Start at  16:14:11
+   Duration  258.29s (transform 53.74s, setup 166.32s, collect 412.68s, tests 115.62s, environment 645.79s, prepare 109.99s)
+

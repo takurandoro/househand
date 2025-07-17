@@ -1,0 +1,252 @@
+{
+  "taskExamples": {
+    "cleaning": "Gusukura no gutunganya inzu...",
+    "gardening": "Kubungabunga ubusitani no gutunganya imbuga...",
+    "painting": "Gusiga no gutaka inzu...",
+    "moving": "Kwimuka no gushyira hamwe ibikoresho...",
+    "repairs": "Gusana no kubungabunga ibintu..."
+  },
+  "hero": {
+    "title": "Shakisha ubufasha mu mirimo yawe yo mu rugo",
+    "subtitle": "Huza n'abafasha b'ubuhanga mu Rwanda. Ibiciro byangiza, kwishyura kw'umutekano, n'inyungu z'imibereho kuri buri wese.",
+    "searchPlaceholder": "Ni iki ugomba ubufasha?",
+    "searchSubtext": "Gusukura, koza, akazi k'akarima...",
+    "location": "Ahantu",
+    "locationText": "Kigali, Rwanda"
+  },
+  "navigation": {
+    "findWork": "Shakisha akazi",
+    "getHelp": "Bona ubufasha",
+    "about": "Turi nde",
+    "login": "Injira",
+    "signup": "Iyandikishe"
+  },
+  "services": {
+    "needHelp": "Nkeneye ubufasha",
+    "needHelpDesc": "Shakira imirimo yawe yo mu rugo ukabona ubufasha bw'abafasha bemejwe",
+    "wantToHelp": "Nshaka gufasha",
+    "wantToHelpDesc": "Shakisha imirimo yo mu rugo mu gace kawe ukayibona ukaborera"
+  },
+  "helpers": {
+    "title": "Abafasha bari hafi yawe",
+    "viewAll": "Reba abafasha bose",
+    "noHelpers": "Ntamufasha uhari ubu",
+    "noHelpersDesc": "Abafasha bazagaragara hano iyo bamaze kwinjira kuri iyi platiforme. Ba wa mbere kwiyandikisha kandi utangire guhuza n'umuryango wawe!"
+  },
+  "impact": {
+    "title": "Tubaka ejo hazaza heza hamwe",
+    "subtitle": "Buri gikorwa giteranya akazi gakora mu ngo kandi gutanga inyungu z'imibereho",
+    "contributionTitle": "Umusanzu ku Kigega cy'Ubwiteganyirize bw'Imibereho",
+    "contributionDesc": "5% ya buri gikorwa cyarangiye byugarijwe ku kigega cy'ubwiteganyirize bw'imibereho cya Rwanda, bifasha gushyira mu mategeko akazi gakora mu ngo no gutanga inyungu kubafasha.",
+    "totalContributions": "Umusanzu wose mukwa:",
+    "helpersBenefiting": "Abafasha bunguka:"
+  },
+  "safety": {
+    "title": "Umutekano wawe ni intego yacu nyamukuru",
+    "subtitle": "Abafasha bose bemejwe kandi imirimo ifite ubwishingizi bwacu"
+  },
+  "footer": {
+    "description": "Guhuza amazu n'abafasha bizwi mu Rwanda. Ibiciro byangiza, kwishyura kw'umutekano, inyungu z'imibereho.",
+    "platform": "Urubuga",
+    "support": "Ubufasha",
+    "community": "Umuryango",
+    "postTask": "Shakira Umurimo",
+    "findWork": "Shakisha Akazi",
+    "safety": "Umutekano",
+    "howItWorks": "Ukuntu Bikora",
+    "helpCenter": "Ikigo cy'Ubufasha",
+    "contactUs": "Tuvugishe",
+    "terms": "Amategeko yo Gukoresha",
+    "privacy": "Politiki y'Ubwenge",
+    "aboutUs": "Turi Nde",
+    "socialImpact": "Ingaruka ku Mibereho",
+    "blog": "Blog",
+    "careers": "Imyuga",
+    "copyright": "© 2025 HouseHand. Uburenganzira bwose burarinzwe."
+  },
+  "toasts": {
+    "signInRequired": "Kwinjira bisabwa",
+    "signInRequiredDesc": "Nyamuneka winjire kugira ngo ushakire umurimo",
+    "languageChanged": "Ururimi rwahinduwe",
+    "languageChangedDesc": "Ururimi rw'urubuga rwahinduwe kuri"
+  },
+  "auth": {
+    "welcomeBack": "Murakaza neza",
+    "signInToAccount": "Injira kuri konti yawe ya HouseHand",
+    "email": "Imeli",
+    "password": "Ijambo banga",
+    "signIn": "Injira",
+    "dontHaveAccount": "Ntufite konti?",
+    "signUpHere": "Iyandikishe hano",
+    "joinHouseHand": "Injira kuri HouseHand",
+    "createAccount": "Kora konti yawe kugira ngo utangire",
+    "fullName": "Amazina yose",
+    "phoneNumber": "Nomero ya telefoni",
+    "location": "Ahantu",
+    "bio": "Kuvuga kuri wowe",
+    "createPassword": "Kora ijambo banga",
+    "confirmPassword": "Emeza ijambo banga",
+    "iAmA": "Ndi:",
+    "client": "Umukiriya",
+    "helper": "Umufasha",
+    "createAccountBtn": "Kora Konti",
+    "alreadyHaveAccount": "Usanzwe ufite konti?",
+    "signInHere": "Injira hano",
+    "accountCreated": "Konti yarakozwe neza!",
+    "welcomeToHouseHand": "Murakaza neza kuri HouseHand. Ubu ushobora kwinjira ku rubuga rwawe.",
+    "welcomeBackToast": "Murakaza neza!",
+    "successfullyLoggedIn": "Winjiye neza.",
+    "signOut": "Sohoka",
+    "forgotPassword": "Wibagiwe ijambo ry'ibanga?",
+    "resetPassword": "Hindura ijambo ry'ibanga",
+    "noAccount": "Nta konti ufite?",
+    "hasAccount": "Usanzwe ufite konti?"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Yihangane! Urupapuro ntirubonetse",
+    "returnHome": "Subira ku Ntangiriro"
+  },
+  "findWork": {
+    "title": "Shakisha Akazi nka Mufasha",
+    "subtitle": "Injira mu muryango w'abafasha bizwi kandi utangire kubona amafaranga angiza mu gihe ufasha abaturanyi bawe mu mirimo yo mu rugo.",
+    "welcomeHelper": "Murakaza neza Mufasha!",
+    "readyToWork": "Ubu witeguye gushakisha amahirwe yo gukora.",
+    "welcomeToHouseHand": "Murakaza neza kuri HouseHand!",
+    "helperAccountCreated": "Konti yawe y'umufasha yarakozwe neza.",
+    "signInAsHelper": "Injira nka Mufasha",
+    "accessDashboard": "Injira ku rubuga rwawe rw'umufasha",
+    "becomeHelper": "Ba Umufasha",
+    "createProfile": "Kora umwirondoro wawe w'umufasha uyu munsi",
+    "signInAsHelperBtn": "Injira nka Mufasha",
+    "newHelper": "Umufasha mushya?",
+    "createHelperAccount": "Kora Konti y'Umufasha",
+    "alreadyHelper": "Usanzwe uri umufasha?",
+    "benefits": {
+      "flexibleSchedule": "Gahunda Ihindagurika",
+      "flexibleScheduleDesc": "Kora igihe ushaka, hitamo imirimo ihuza n'igihe cyawe",
+      "fairCompensation": "Kwishyurwa Kw'Ubutabazi",
+      "fairCompensationDesc": "Bona amafaranga menshi hamwe n'ibiciro bigaragara",
+      "workLocally": "Kora Hafi",
+      "workLocallyDesc": "Shakisha imirimo mu gace kawe no mu muryango wawe"
+    }
+  },
+  "getHelp": {
+    "title": "Bona Ubufasha mu Mirimo Yawe",
+    "subtitle": "Huza n'abafasha bizwi mu gace kawe ku mirimo yose yo mu rugo. Kuva gusukura kugeza ku mirimo y'akarima, dufite byose.",
+    "welcomeBack": "Murakaza neza!",
+    "readyToPost": "Ubu witeguye gushakira imirimo no kubona ubufasha.",
+    "accountCreated": "Konti yawe yarakozwe neza.",
+    "signInToGetHelp": "Injira kugira ngo Ubone Ubufasha",
+    "accessAccount": "Injira kuri konti yawe kugira ngo ushakire imirimo",
+    "joinHouseHand": "Injira kuri HouseHand",
+    "createAccountToStart": "Kora konti yawe kugira ngo utangire kubona ubufasha",
+    "needHelpFirstTime": "Ukeneye ubufasha ku nshuro ya mbere?",
+    "benefits": {
+      "verifiedHelpers": "Abafasha Bemejwe",
+      "verifiedHelpersDesc": "Abafasha bose bagenzuwe kandi bemejwe",
+      "quickMatching": "Guhuza Vuba",
+      "quickMatchingDesc": "Huzwa n'abafasha baboneka mu minota",
+      "satisfactionGuarantee": "Ubwishingizi bw'Kugumya",
+      "satisfactionGuaranteeDesc": "Kugumya kwawe kwemezwa cyangwa amafaranga yawe agaruke"
+    }
+  },
+  "common": {
+    "loading": "Tegereza...",
+    "error": "Ikibazo",
+    "success": "Byagenze neza",
+    "save": "Bika",
+    "cancel": "Reka",
+    "delete": "Siba",
+    "edit": "Hindura",
+    "submit": "Ohereza",
+    "back": "Subira inyuma",
+    "next": "Komeza",
+    "search": "Shakisha",
+    "filter": "Shungura",
+    "sort": "Tondeka",
+    "view": "Reba",
+    "close": "Funga"
+  },
+  "profile": {
+    "title": "Umwirondoro",
+    "edit": "Hindura umwirondoro",
+    "fullName": "Amazina yose",
+    "phone": "Telefoni",
+    "location": "Aho ubarizwa",
+    "bio": "Ibisobanuro",
+    "rating": "Amanota",
+    "totalTasks": "Imirimo yose",
+    "memberSince": "Yiyandikishije"
+  },
+  "task": {
+    "create": "Tanga akazi",
+    "edit": "Hindura akazi",
+    "title": "Umutwe",
+    "description": "Ibisobanuro",
+    "location": "Aho bikorerwa",
+    "category": "Ubwoko",
+    "effortLevel": "Uburemere",
+    "budget": "Igiciro",
+    "status": {
+      "open": "Birashaka umukozi",
+      "assigned": "Byatangiwe umukozi",
+      "inProgress": "Birakorwa",
+      "completed": "Byarangiye",
+      "cancelled": "Byahagaritswe"
+    },
+    "categories": {
+      "cleaning": "Gusukura",
+      "gardening": "Gufata neza ubusitani",
+      "maintenance": "Gusana",
+      "moving": "Kwimuka",
+      "painting": "Gusiga",
+      "other": "Ibindi"
+    },
+    "effort": {
+      "easy": "Byoroshye",
+      "medium": "Biringaniye",
+      "hard": "Birakomeye"
+    }
+  },
+  "bid": {
+    "submit": "Saba akazi",
+    "withdraw": "Kuraho ubusabe",
+    "accept": "Emera ubusabe",
+    "reject": "Anga ubusabe",
+    "message": "Ubutumwa",
+    "proposedPrice": "Igiciro utanga",
+    "status": {
+      "submitted": "Byoherejwe",
+      "accepted": "Byemewe",
+      "rejected": "Byanzwe",
+      "withdrawn": "Byakuweho"
+    }
+  },
+  "notification": {
+    "newBid": "Ubusabe bushya",
+    "bidAccepted": "Ubusabe bwemewe",
+    "bidRejected": "Ubusabe bwanzwe",
+    "taskStarted": "Akazi katangiye",
+    "taskCompleted": "Akazi karangiye",
+    "paymentReceived": "Amafaranga yakiriwe",
+    "paymentSent": "Amafaranga yoherejwe",
+    "markAsRead": "Fata nk'ibisomwe",
+    "markAllAsRead": "Fata byose nk'ibisomwe"
+  },
+  "validation": {
+    "required": "Iki gice ni ngombwa",
+    "email": "Imeyili ntiyemewe",
+    "password": {
+      "length": "Ijambo ry'ibanga rigomba kuba rifite inyuguti 8 cyangwa zirenga",
+      "uppercase": "Ijambo ry'ibanga rigomba kuba rifite inyuguti nkuru",
+      "lowercase": "Ijambo ry'ibanga rigomba kuba rifite inyuguti ntoya",
+      "number": "Ijambo ry'ibanga rigomba kuba rifite imibare"
+    },
+    "phone": "Numero ya telefoni ntiyemewe",
+    "budget": {
+      "min": "Igiciro ntikigomba kuba kiri munsi ya zeru",
+      "max": "Igiciro ntarengwa ntikigomba kuba kiri munsi y'igiciro fatizo"
+    }
+  }
+}

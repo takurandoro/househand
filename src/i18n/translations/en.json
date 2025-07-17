@@ -1,0 +1,252 @@
+{
+  "hero": {
+    "title": "Find help for your household tasks",
+    "subtitle": "Connect with skilled helpers in Rwanda. Fair pricing, secure payments, and social benefits for everyone.",
+    "searchPlaceholder": "What do you need help with?",
+    "searchSubtext": "Cleaning, washing, yard work...",
+    "location": "Location",
+    "locationText": "Kigali, Rwanda"
+  },
+  "navigation": {
+    "findWork": "Find work",
+    "getHelp": "Get help",
+    "about": "About",
+    "login": "Log in",
+    "signup": "Sign up"
+  },
+  "services": {
+    "needHelp": "I need help",
+    "needHelpDesc": "Post your household tasks and get help from verified helpers",
+    "wantToHelp": "I want to help",
+    "wantToHelpDesc": "Find household tasks in your area and earn fair income"
+  },
+  "helpers": {
+    "title": "Helpers near you",
+    "viewAll": "View all helpers",
+    "noHelpers": "No helpers available yet",
+    "noHelpersDesc": "Helpers will appear here once they join the platform. Be the first to sign up and start connecting with your community!"
+  },
+  "impact": {
+    "title": "Building a better future together",
+    "subtitle": "Every task helps formalize domestic work and provides social benefits",
+    "contributionTitle": "Social Security Fund Contribution",
+    "contributionDesc": "5% of each completed task automatically contributes to Rwanda's social security fund, helping formalize domestic work and provide benefits to helpers.",
+    "totalContributions": "Total Contributions This Month:",
+    "helpersBenefiting": "Helpers Benefiting:"
+  },
+  "safety": {
+    "title": "Your safety is our priority",
+    "subtitle": "All helpers are verified and tasks are covered by our guarantee"
+  },
+  "footer": {
+    "description": "Connecting households with trusted helpers across Rwanda. Fair pricing, secure payments, social benefits.",
+    "platform": "Platform",
+    "support": "Support",
+    "community": "Community",
+    "postTask": "Post a Task",
+    "findWork": "Find Work",
+    "safety": "Safety",
+    "howItWorks": "How it Works",
+    "helpCenter": "Help Center",
+    "contactUs": "Contact Us",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "aboutUs": "About Us",
+    "socialImpact": "Social Impact",
+    "blog": "Blog",
+    "careers": "Careers",
+    "copyright": "© 2025 HouseHand. All rights reserved."
+  },
+  "toasts": {
+    "signInRequired": "Sign in required",
+    "signInRequiredDesc": "Please sign in to post a task",
+    "languageChanged": "Language changed",
+    "languageChangedDesc": "Website language changed to"
+  },
+  "auth": {
+    "welcomeBack": "Welcome Back",
+    "signInToAccount": "Sign in to your HouseHand account",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign In",
+    "dontHaveAccount": "Don't have an account?",
+    "signUpHere": "Sign up here",
+    "joinHouseHand": "Join HouseHand",
+    "createAccount": "Create your account to get started",
+    "fullName": "Full Name",
+    "phoneNumber": "Phone Number",
+    "location": "Location",
+    "bio": "About You",
+    "createPassword": "Create a password",
+    "confirmPassword": "Confirm Password",
+    "iAmA": "I am a:",
+    "client": "Client",
+    "helper": "Helper",
+    "createAccountBtn": "Create Account",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInHere": "Sign in here",
+    "accountCreated": "Account created successfully!",
+    "welcomeToHouseHand": "Welcome to HouseHand. You can now access your dashboard.",
+    "welcomeBackToast": "Welcome back!",
+    "successfullyLoggedIn": "You have successfully logged in.",
+    "signOut": "Sign Out",
+    "forgotPassword": "Forgot Password?",
+    "resetPassword": "Reset Password",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oops! Page not found",
+    "returnHome": "Return to Home"
+  },
+  "findWork": {
+    "title": "Find Work as a Helper",
+    "subtitle": "Join our community of trusted helpers and start earning fair income while helping your neighbors with household tasks.",
+    "welcomeHelper": "Welcome Helper!",
+    "readyToWork": "You're now ready to find work opportunities.",
+    "welcomeToHouseHand": "Welcome to HouseHand!",
+    "helperAccountCreated": "Your helper account has been created successfully.",
+    "signInAsHelper": "Sign In as Helper",
+    "accessDashboard": "Access your helper dashboard",
+    "becomeHelper": "Become a Helper",
+    "createProfile": "Create your helper profile today",
+    "signInAsHelperBtn": "Sign In as Helper",
+    "newHelper": "New helper?",
+    "createHelperAccount": "Create Helper Account",
+    "alreadyHelper": "Already a helper?",
+    "benefits": {
+      "flexibleSchedule": "Flexible Schedule",
+      "flexibleScheduleDesc": "Work when you want, choose tasks that fit your schedule",
+      "fairCompensation": "Fair Compensation",
+      "fairCompensationDesc": "Earn competitive rates with transparent pricing",
+      "workLocally": "Work Locally",
+      "workLocallyDesc": "Find tasks in your neighborhood and community"
+    }
+  },
+  "getHelp": {
+    "title": "Get Help with Your Tasks",
+    "subtitle": "Connect with trusted helpers in your area for all your household needs. From cleaning to yard work, we've got you covered.",
+    "welcomeBack": "Welcome back!",
+    "readyToPost": "You're now ready to post tasks and get help.",
+    "accountCreated": "Your account has been created successfully.",
+    "signInToGetHelp": "Sign In to Get Help",
+    "accessAccount": "Access your account to post tasks",
+    "joinHouseHand": "Join HouseHand",
+    "createAccountToStart": "Create your account to start getting help",
+    "needHelpFirstTime": "Need help for the first time?",
+    "benefits": {
+      "verifiedHelpers": "Verified Helpers",
+      "verifiedHelpersDesc": "All helpers are background-checked and verified",
+      "quickMatching": "Quick Matching",
+      "quickMatchingDesc": "Get matched with available helpers in minutes",
+      "satisfactionGuarantee": "Satisfaction Guarantee",
+      "satisfactionGuaranteeDesc": "Your satisfaction is guaranteed or your money back"
+    }
+  },
+  "taskExamples": {
+    "cleaning": "House cleaning and organizing...",
+    "gardening": "Garden maintenance and landscaping...",
+    "painting": "House painting and decoration...",
+    "moving": "Moving help and furniture assembly...",
+    "repairs": "Minor repairs and maintenance..."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "view": "View",
+    "close": "Close"
+  },
+  "profile": {
+    "title": "Profile",
+    "edit": "Edit Profile",
+    "fullName": "Full Name",
+    "phone": "Phone Number",
+    "location": "Location",
+    "bio": "Bio",
+    "rating": "Rating",
+    "totalTasks": "Total Tasks",
+    "memberSince": "Member Since"
+  },
+  "task": {
+    "create": "Create Task",
+    "edit": "Edit Task",
+    "title": "Title",
+    "description": "Description",
+    "location": "Location",
+    "category": "Category",
+    "effortLevel": "Effort Level",
+    "budget": "Budget",
+    "status": {
+      "open": "Open",
+      "assigned": "Assigned",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "categories": {
+      "cleaning": "Cleaning",
+      "gardening": "Gardening",
+      "maintenance": "Maintenance",
+      "moving": "Moving",
+      "painting": "Painting",
+      "other": "Other"
+    },
+    "effort": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    }
+  },
+  "bid": {
+    "submit": "Submit Bid",
+    "withdraw": "Withdraw Bid",
+    "accept": "Accept Bid",
+    "reject": "Reject Bid",
+    "message": "Message",
+    "proposedPrice": "Proposed Price",
+    "status": {
+      "submitted": "Submitted",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "withdrawn": "Withdrawn"
+    }
+  },
+  "notification": {
+    "newBid": "New Bid",
+    "bidAccepted": "Bid Accepted",
+    "bidRejected": "Bid Rejected",
+    "taskStarted": "Task Started",
+    "taskCompleted": "Task Completed",
+    "paymentReceived": "Payment Received",
+    "paymentSent": "Payment Sent",
+    "markAsRead": "Mark as Read",
+    "markAllAsRead": "Mark All as Read"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Invalid email address",
+    "password": {
+      "length": "Password must be at least 8 characters long",
+      "uppercase": "Password must contain at least one uppercase letter",
+      "lowercase": "Password must contain at least one lowercase letter",
+      "number": "Password must contain at least one number"
+    },
+    "phone": "Invalid phone number",
+    "budget": {
+      "min": "Budget cannot be negative",
+      "max": "Maximum budget cannot be less than minimum budget"
+    }
+  }
+}

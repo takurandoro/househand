@@ -1,0 +1,252 @@
+{
+  "hero": {
+    "title": "Trouvez de l'aide pour vos tâches ménagères",
+    "subtitle": "Connectez-vous avec des assistants qualifiés au Rwanda. Prix équitables, paiements sécurisés et prestations sociales pour tous.",
+    "searchPlaceholder": "De quelle aide avez-vous besoin?",
+    "searchSubtext": "Nettoyage, lessive, jardinage...",
+    "location": "Lieu",
+    "locationText": "Kigali, Rwanda"
+  },
+  "navigation": {
+    "findWork": "Trouver du travail",
+    "getHelp": "Obtenir de l'aide",
+    "about": "À propos",
+    "login": "Se connecter",
+    "signup": "S'inscrire"
+  },
+  "services": {
+    "needHelp": "J'ai besoin d'aide",
+    "needHelpDesc": "Publiez vos tâches ménagères et obtenez de l'aide d'assistants vérifiés",
+    "wantToHelp": "Je veux aider",
+    "wantToHelpDesc": "Trouvez des tâches ménagères dans votre région et gagnez un revenu équitable"
+  },
+  "helpers": {
+    "title": "Assistants près de chez vous",
+    "viewAll": "Voir tous les assistants",
+    "noHelpers": "Aucun assistant disponible pour le moment",
+    "noHelpersDesc": "Les assistants apparaîtront ici une fois qu'ils rejoindront la plateforme. Soyez le premier à vous inscrire et commencez à vous connecter avec votre communauté!"
+  },
+  "impact": {
+    "title": "Construire un avenir meilleur ensemble",
+    "subtitle": "Chaque tâche aide à formaliser le travail domestique et fournit des prestations sociales",
+    "contributionTitle": "Contribution au Fonds de Sécurité Sociale",
+    "contributionDesc": "5% de chaque tâche terminée contribue automatiquement au fonds de sécurité sociale du Rwanda, aidant à formaliser le travail domestique et à fournir des prestations aux assistants.",
+    "totalContributions": "Total des Contributions ce Mois:",
+    "helpersBenefiting": "Assistants Bénéficiaires:"
+  },
+  "safety": {
+    "title": "Votre sécurité est notre priorité",
+    "subtitle": "Tous les assistants sont vérifiés et les tâches sont couvertes par notre garantie"
+  },
+  "footer": {
+    "description": "Connecter les ménages avec des assistants de confiance à travers le Rwanda. Prix équitables, paiements sécurisés, prestations sociales.",
+    "platform": "Plateforme",
+    "support": "Support",
+    "community": "Communauté",
+    "postTask": "Publier une Tâche",
+    "findWork": "Trouver du Travail",
+    "safety": "Sécurité",
+    "howItWorks": "Comment ça Marche",
+    "helpCenter": "Centre d'Aide",
+    "contactUs": "Nous Contacter",
+    "terms": "Conditions d'Utilisation",
+    "privacy": "Politique de Confidentialité",
+    "aboutUs": "À Propos de Nous",
+    "socialImpact": "Impact Social",
+    "blog": "Blog",
+    "careers": "Carrières",
+    "copyright": "© 2025 HouseHand. Tous droits réservés."
+  },
+  "toasts": {
+    "signInRequired": "Connexion requise",
+    "signInRequiredDesc": "Veuillez vous connecter pour publier une tâche",
+    "languageChanged": "Langue changée",
+    "languageChangedDesc": "La langue du site web a été changée en"
+  },
+  "auth": {
+    "welcomeBack": "Bon retour",
+    "signInToAccount": "Connectez-vous à votre compte HouseHand",
+    "email": "Email",
+    "password": "Mot de passe",
+    "signIn": "Se connecter",
+    "dontHaveAccount": "Vous n'avez pas de compte?",
+    "signUpHere": "Inscrivez-vous ici",
+    "joinHouseHand": "Rejoindre HouseHand",
+    "createAccount": "Créez votre compte pour commencer",
+    "fullName": "Nom complet",
+    "phoneNumber": "Numéro de téléphone",
+    "location": "Localisation",
+    "bio": "À propos de vous",
+    "createPassword": "Créer un mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "iAmA": "Je suis un:",
+    "client": "Client",
+    "helper": "Assistant",
+    "createAccountBtn": "Créer un compte",
+    "alreadyHaveAccount": "Vous avez déjà un compte?",
+    "signInHere": "Connectez-vous ici",
+    "accountCreated": "Compte créé avec succès!",
+    "welcomeToHouseHand": "Bienvenue sur HouseHand. Vous pouvez maintenant accéder à votre tableau de bord.",
+    "welcomeBackToast": "Bon retour!",
+    "successfullyLoggedIn": "Vous vous êtes connecté avec succès.",
+    "signOut": "Se déconnecter",
+    "forgotPassword": "Mot de passe oublié ?",
+    "resetPassword": "Réinitialiser le mot de passe",
+    "noAccount": "Pas encore de compte ?",
+    "hasAccount": "Déjà un compte ?"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oups! Page non trouvée",
+    "returnHome": "Retour à l'accueil"
+  },
+  "findWork": {
+    "title": "Trouver du Travail comme Assistant",
+    "subtitle": "Rejoignez notre communauté d'assistants de confiance et commencez à gagner un revenu équitable en aidant vos voisins avec les tâches ménagères.",
+    "welcomeHelper": "Bienvenue Assistant!",
+    "readyToWork": "Vous êtes maintenant prêt à trouver des opportunités de travail.",
+    "welcomeToHouseHand": "Bienvenue sur HouseHand!",
+    "helperAccountCreated": "Votre compte d'assistant a été créé avec succès.",
+    "signInAsHelper": "Se Connecter comme Assistant",
+    "accessDashboard": "Accédez à votre tableau de bord d'assistant",
+    "becomeHelper": "Devenir Assistant",
+    "createProfile": "Créez votre profil d'assistant aujourd'hui",
+    "signInAsHelperBtn": "Se Connecter comme Assistant",
+    "newHelper": "Nouvel assistant?",
+    "createHelperAccount": "Créer un Compte d'Assistant",
+    "alreadyHelper": "Déjà assistant?",
+    "benefits": {
+      "flexibleSchedule": "Horaire Flexible",
+      "flexibleScheduleDesc": "Travaillez quand vous voulez, choisissez des tâches qui correspondent à votre horaire",
+      "fairCompensation": "Rémunération Équitable",
+      "fairCompensationDesc": "Gagnez des tarifs compétitifs avec une tarification transparente",
+      "workLocally": "Travail Local",
+      "workLocallyDesc": "Trouvez des tâches dans votre quartier et votre communauté"
+    }
+  },
+  "getHelp": {
+    "title": "Obtenez de l'Aide pour Vos Tâches",
+    "subtitle": "Connectez-vous avec des assistants de confiance dans votre région pour tous vos besoins ménagers. Du nettoyage au jardinage, nous avons tout couvert.",
+    "welcomeBack": "Bon retour!",
+    "readyToPost": "Vous êtes maintenant prêt à publier des tâches et obtenir de l'aide.",
+    "accountCreated": "Votre compte a été créé avec succès.",
+    "signInToGetHelp": "Se Connecter pour Obtenir de l'Aide",
+    "accessAccount": "Accédez à votre compte pour publier des tâches",
+    "joinHouseHand": "Rejoindre HouseHand",
+    "createAccountToStart": "Créez votre compte pour commencer à obtenir de l'aide",
+    "needHelpFirstTime": "Besoin d'aide pour la première fois?",
+    "benefits": {
+      "verifiedHelpers": "Assistants Vérifiés",
+      "verifiedHelpersDesc": "Tous les assistants sont vérifiés et contrôlés",
+      "quickMatching": "Correspondance Rapide",
+      "quickMatchingDesc": "Soyez associé avec des assistants disponibles en quelques minutes",
+      "satisfactionGuarantee": "Garantie de Satisfaction",
+      "satisfactionGuaranteeDesc": "Votre satisfaction est garantie ou votre argent remboursé"
+    }
+  },
+  "taskExamples": {
+    "cleaning": "Nettoyage et organisation de la maison...",
+    "gardening": "Entretien du jardin et aménagement paysager...",
+    "painting": "Peinture et décoration de la maison...",
+    "moving": "Aide au déménagement et montage de meubles...",
+    "repairs": "Petites réparations et entretien..."
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "submit": "Soumettre",
+    "back": "Retour",
+    "next": "Suivant",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "view": "Voir",
+    "close": "Fermer"
+  },
+  "profile": {
+    "title": "Profil",
+    "edit": "Modifier le profil",
+    "fullName": "Nom complet",
+    "phone": "Numéro de téléphone",
+    "location": "Localisation",
+    "bio": "Bio",
+    "rating": "Évaluation",
+    "totalTasks": "Total des tâches",
+    "memberSince": "Membre depuis"
+  },
+  "task": {
+    "create": "Créer une tâche",
+    "edit": "Modifier la tâche",
+    "title": "Titre",
+    "description": "Description",
+    "location": "Localisation",
+    "category": "Catégorie",
+    "effortLevel": "Niveau d'effort",
+    "budget": "Budget",
+    "status": {
+      "open": "Ouvert",
+      "assigned": "Assigné",
+      "inProgress": "En cours",
+      "completed": "Terminé",
+      "cancelled": "Annulé"
+    },
+    "categories": {
+      "cleaning": "Nettoyage",
+      "gardening": "Jardinage",
+      "maintenance": "Maintenance",
+      "moving": "Déménagement",
+      "painting": "Peinture",
+      "other": "Autre"
+    },
+    "effort": {
+      "easy": "Facile",
+      "medium": "Moyen",
+      "hard": "Difficile"
+    }
+  },
+  "bid": {
+    "submit": "Soumettre une offre",
+    "withdraw": "Retirer l'offre",
+    "accept": "Accepter l'offre",
+    "reject": "Rejeter l'offre",
+    "message": "Message",
+    "proposedPrice": "Prix proposé",
+    "status": {
+      "submitted": "Soumis",
+      "accepted": "Accepté",
+      "rejected": "Rejeté",
+      "withdrawn": "Retiré"
+    }
+  },
+  "notification": {
+    "newBid": "Nouvelle offre",
+    "bidAccepted": "Offre acceptée",
+    "bidRejected": "Offre rejetée",
+    "taskStarted": "Tâche commencée",
+    "taskCompleted": "Tâche terminée",
+    "paymentReceived": "Paiement reçu",
+    "paymentSent": "Paiement envoyé",
+    "markAsRead": "Marquer comme lu",
+    "markAllAsRead": "Tout marquer comme lu"
+  },
+  "validation": {
+    "required": "Ce champ est obligatoire",
+    "email": "Adresse email invalide",
+    "password": {
+      "length": "Le mot de passe doit contenir au moins 8 caractères",
+      "uppercase": "Le mot de passe doit contenir au moins une majuscule",
+      "lowercase": "Le mot de passe doit contenir au moins une minuscule",
+      "number": "Le mot de passe doit contenir au moins un chiffre"
+    },
+    "phone": "Numéro de téléphone invalide",
+    "budget": {
+      "min": "Le budget ne peut pas être négatif",
+      "max": "Le budget maximum ne peut pas être inférieur au budget minimum"
+    }
+  }
+}

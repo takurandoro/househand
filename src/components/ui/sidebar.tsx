@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
-import { PanelLeft } from "lucide-react"
+import { PanelLeft, Calendar, MapPin, Filter } from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -16,6 +16,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Card } from "./card"
+import { Checkbox } from "./checkbox"
+import { Label } from "./label"
+import { Star } from "lucide-react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -732,6 +736,140 @@ const SidebarMenuSubButton = React.forwardRef<
   )
 })
 SidebarMenuSubButton.displayName = "SidebarMenuSubButton"
+
+interface HelperSidebarProps {
+  earnings: number;
+  tasksDone: number;
+  socialFund: number;
+  rating: number;
+  reviews: number;
+  onFilterChange?: (filters: {
+    location: string;
+    effortLevel: string[];
+  }) => void;
+}
+
+export const HelperSidebar: React.FC<HelperSidebarProps> = ({
+  earnings,
+  tasksDone,
+  socialFund,
+  rating,
+  reviews,
+  onFilterChange,
+}) => {
+  const [selectedLocation, setSelectedLocation] = React.useState("all");
+  const [selectedEffort, setSelectedEffort] = React.useState<string[]>([]);
+
+  const handleEffortChange = (effort: string) => {
+    const newEffort = selectedEffort.includes(effort)
+      ? selectedEffort.filter(e => e !== effort)
+      : [...selectedEffort, effort];
+    setSelectedEffort(newEffort);
+    onFilterChange?.({ location: selectedLocation, effortLevel: newEffort });
+  };
+
+  return (
+    <div className="w-80 space-y-6">
+      {/* Earnings Card */}
+      <Card className="p-6 bg-[#1C2127] text-white">
+        <div className="flex items-center gap-2 mb-4">
+          <Calendar className="w-5 h-5" />
+          <span className="font-medium">Your earnings</span>
+        </div>
+        <div className="space-y-4">
+          <div>
+            <div className="text-3xl font-bold">{earnings.toLocaleString()} RWF</div>
+            <div className="text-gray-400">This month</div>
+          </div>
+          <div className="flex justify-between text-sm pt-4 border-t border-gray-700">
+            <div>
+              <div className="text-blue-400">{tasksDone}</div>
+              <div className="text-gray-400">Tasks done</div>
+            </div>
+            <div>
+              <div className="text-orange-400">{socialFund.toLocaleString()}</div>
+              <div className="text-gray-400">Social fund</div>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-2 gap-4">
+        <Card className="p-4">
+          <div className="text-2xl font-bold flex items-center gap-2">
+            {rating}
+            <Star className="w-5 h-5 text-yellow-400 fill-current" />
+          </div>
+          <div className="text-gray-500 text-sm">Rating</div>
+        </Card>
+        <Card className="p-4">
+          <div className="text-2xl font-bold">{reviews}</div>
+          <div className="text-gray-500 text-sm">Reviews</div>
+        </Card>
+      </div>
+
+      {/* Filters */}
+      <div className="space-y-6">
+        <div className="flex items-center gap-2">
+          <Filter className="w-5 h-5" />
+          <span className="font-medium">Filters</span>
+        </div>
+
+        {/* Location Filter */}
+        <div className="space-y-4">
+          <Label className="text-base">Location</Label>
+          <div className="grid grid-cols-2 gap-2">
+            <Input 
+              placeholder="Area (e.g. Kanombe)"
+              value={selectedLocation === 'all' ? '' : selectedLocation.split(', ')[0]}
+              onChange={(e) => {
+                const area = e.target.value;
+                const district = selectedLocation === 'all' ? '' : selectedLocation.split(', ')[1] || '';
+                const newLocation = area && district ? `${area}, ${district}` : 'all';
+                setSelectedLocation(newLocation);
+                onFilterChange?.({ location: newLocation, effortLevel: selectedEffort });
+              }}
+            />
+            <Input 
+              placeholder="District (e.g. Kigali)"
+              value={selectedLocation === 'all' ? '' : selectedLocation.split(', ')[1] || ''}
+              onChange={(e) => {
+                const district = e.target.value;
+                const area = selectedLocation === 'all' ? '' : selectedLocation.split(', ')[0] || '';
+                const newLocation = area && district ? `${area}, ${district}` : 'all';
+                setSelectedLocation(newLocation);
+                onFilterChange?.({ location: newLocation, effortLevel: selectedEffort });
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Effort Level Filter */}
+        <div className="space-y-4">
+          <Label className="text-base">Effort level</Label>
+          <div className="space-y-3">
+            {['Low effort', 'Medium effort', 'High effort'].map((effort) => (
+              <div key={effort} className="flex items-center space-x-2">
+                <Checkbox
+                  id={effort}
+                  checked={selectedEffort.includes(effort)}
+                  onCheckedChange={() => handleEffortChange(effort)}
+                />
+                <label
+                  htmlFor={effort}
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  {effort}
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export {
   Sidebar,
