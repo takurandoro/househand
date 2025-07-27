@@ -1,16 +1,12 @@
-import { createClient } from '@supabase/supabase-js';
 import { ApiResponse } from '@/types';
+import { supabase } from '@/integrations/supabase/client';
 
-// Environment validation
+// Re-export the supabase client to maintain compatibility
+export { supabase };
+
+// Get environment variables for utilities
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
-}
-
-// Create Supabase client
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Base authentication utilities
 export const getCurrentUser = async () => {

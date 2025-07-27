@@ -19,7 +19,7 @@ export interface HelperProfile {
   created_at: string;
 }
 
-export type TaskCategory = 'cleaning' | 'gardening' | 'moving' | 'home_maintenance' | 'other';
+
 
 export interface Task {
   id: string;
@@ -31,10 +31,10 @@ export interface Task {
   payment_status: boolean;
   payment_amount?: number;
   payment_date?: string;
-  budget_min: number;
-  budget_max: number;
+  min_price: number;
+  max_price: number;
   location: string;
-  category: TaskCategory;
+  category: import('./common').TaskCategory;
   hours: string;
   created_at: string;
   updated_at: string;
@@ -69,8 +69,6 @@ export interface TaskApplication {
 
 export interface TaskWithRelations extends Task {
   bids?: Bid[];
-  min_price?: number;
-  max_price?: number;
 }
 
 export interface UserMetadata {

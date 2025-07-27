@@ -32,7 +32,7 @@ export const useTasks = (userId: string | undefined, userType: 'client' | 'helpe
         const tasks = await loadTasksForView({
           userId,
           userType,
-          view: 'available',
+          view: userType === 'client' ? 'all' : 'available',
           location: filters.location,
           effortLevels: filters.effortLevels
         });
@@ -44,7 +44,13 @@ export const useTasks = (userId: string | undefined, userType: 'client' | 'helpe
         throw error;
       }
     },
-    enabled: !!userId && !!userType
+    enabled: !!userId && !!userType,
+    staleTime: 2 * 60 * 1000, // 2 minutes - match data/useTasks
+    gcTime: 10 * 60 * 1000, // 10 minutes - match data/useTasks
+    refetchOnWindowFocus: false, // Don't refetch when window gains focus
+    refetchOnMount: true, // Always refetch when component mounts
+    // Keep previous data while loading to prevent flickering
+    placeholderData: (previousData) => previousData
   });
 
   // Query for unpaid tasks (for clients)
@@ -60,7 +66,12 @@ export const useTasks = (userId: string | undefined, userType: 'client' | 'helpe
       });
       return allTasks.filter(task => task.status === 'completed' && !task.payment_status);
     },
-    enabled: !!userId && userType === 'client'
+    enabled: !!userId && userType === 'client',
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    placeholderData: (previousData) => previousData
   });
 
   // Filter tasks based on user type and filters

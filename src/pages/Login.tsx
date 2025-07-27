@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
-import { User, ArrowLeft } from "lucide-react";
+import { User, ArrowLeft, Loader2 } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import { supabase } from "@/integrations/supabase/client";
 
@@ -135,7 +135,14 @@ const Login = () => {
                     className="w-full bg-gradient-to-r from-black to-orange-600 hover:from-gray-900 hover:to-orange-700 text-white py-3 text-lg"
                     disabled={isLoading}
                   >
-                    {isLoading ? 'Signing in...' : t('auth.signIn')}
+                    {isLoading ? (
+                      <div className="flex items-center space-x-2">
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Signing in...</span>
+                      </div>
+                    ) : (
+                      t('auth.signIn')
+                    )}
                   </Button>
                   <p className="text-center text-sm text-gray-600">
                     {t('auth.dontHaveAccount')}{' '}

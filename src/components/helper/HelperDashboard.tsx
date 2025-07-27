@@ -89,13 +89,26 @@ export const HelperDashboard: React.FC<HelperDashboardProps> = ({
   // Queries - Updated to use new filter parameters
   const { data: availableTasks = [], isLoading: isLoadingAvailable } = useQuery<TaskWithRelations[]>({
     queryKey: ['tasks', 'available', userProfile.id, selectedHours, selectedCategories],
-    queryFn: () => loadTasksForView({
-      userId: userProfile.id,
-      userType: 'helper',
-      view: 'available',
-      hours: selectedHours,
-      categories: selectedCategories
-    })
+    queryFn: async () => {
+      console.log('🔍 Loading available tasks with filters:', { 
+        selectedHours, 
+        selectedCategories,
+        selectedHoursLength: selectedHours.length,
+        selectedCategoriesLength: selectedCategories.length
+      });
+      const tasks = await loadTasksForView({
+        userId: userProfile.id,
+        userType: 'helper',
+        view: 'available',
+        hours: selectedHours,
+        categories: selectedCategories
+      });
+      console.log('🔍 Available tasks loaded:', {
+        tasksCount: tasks.length,
+        sampleTask: tasks.length > 0 ? tasks[0] : null
+      });
+      return tasks;
+    }
   });
 
   const { data: myBids = [], isLoading: isLoadingBids } = useQuery<TaskWithRelations[]>({
@@ -143,20 +156,24 @@ export const HelperDashboard: React.FC<HelperDashboardProps> = ({
 
   // Updated handlers for new filter system
   const handleHoursChange = (hours: string) => {
+    console.log('handleHoursChange called with:', hours);
     setSelectedHours(prev => {
-      if (prev.includes(hours)) {
-        return prev.filter(h => h !== hours);
-      }
-      return [...prev, hours];
+      const newHours = prev.includes(hours) 
+        ? prev.filter(h => h !== hours)
+        : [...prev, hours];
+      console.log('New selectedHours:', newHours);
+      return newHours;
     });
   };
 
   const handleCategoryChange = (category: string) => {
+    console.log('handleCategoryChange called with:', category);
     setSelectedCategories(prev => {
-      if (prev.includes(category)) {
-        return prev.filter(c => c !== category);
-      }
-      return [...prev, category];
+      const newCategories = prev.includes(category)
+        ? prev.filter(c => c !== category)
+        : [...prev, category];
+      console.log('New selectedCategories:', newCategories);
+      return newCategories;
     });
   };
 

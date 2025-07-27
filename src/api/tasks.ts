@@ -82,10 +82,10 @@ export const loadTasksForView = async (options: {
     }
     if (filters.budget_range) {
       if (filters.budget_range.min) {
-        query = query.gte('budget_min', filters.budget_range.min);
+        query = query.gte('min_price', filters.budget_range.min);
       }
       if (filters.budget_range.max) {
-        query = query.lte('budget_max', filters.budget_range.max);
+        query = query.lte('max_price', filters.budget_range.max);
       }
     }
   }
@@ -146,10 +146,16 @@ export const getTaskById = async (taskId: string): Promise<TaskWithRelations> =>
 // Create a new task
 export const createTask = async (options: TaskCreateOptions): Promise<Task> => {
   try {
+    // Get the current user
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError) throw userError;
+    if (!user) throw new Error('User not authenticated');
+
     const { data, error } = await supabase
       .from('tasks')
       .insert({
         ...options,
+        client_id: user.id,
         status: 'open',
         payment_status: false,
         created_at: new Date().toISOString(),
@@ -161,7 +167,21 @@ export const createTask = async (options: TaskCreateOptions): Promise<Task> => {
     if (error) throw error;
     return data;
   } catch (error) {
-    throw handleApiError(error);
+    // Log the error for debugging
+    console.error('Task creation error:', error);
+    
+    // If it's already an Error object, throw it directly
+    if (error instanceof Error) {
+      throw error;
+    }
+    
+    // If it's a Supabase error, extract the message
+    if (error && typeof error === 'object' && 'message' in error) {
+      throw new Error(error.message as string);
+    }
+    
+    // Fallback error
+    throw new Error('Failed to create task');
   }
 };
 

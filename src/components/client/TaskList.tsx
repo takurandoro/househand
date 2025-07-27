@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Clock, User } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import type { TaskWithRelations } from '@/types/task';
+import { TaskListSkeleton } from '@/components/ui/task-skeleton';
 import React from 'react';
 
 interface TaskListProps {
   tasks: TaskWithRelations[];
+  isLoading?: boolean;
   expandedTaskId?: string | null;
   onTaskExpand?: (taskId: string | null) => void;
   onAcceptBid?: (taskId: string, applicationId: string) => void;
@@ -17,12 +19,31 @@ interface TaskListProps {
 
 export const TaskList: React.FC<TaskListProps> = ({
   tasks,
+  isLoading = false,
   expandedTaskId,
   onTaskExpand = () => {},
   onAcceptBid = () => {},
   onRejectBid = () => {},
   onPaymentRequest = () => {},
 }) => {
+  const getCategoryLabel = (category: string) => {
+    const categoryLabels: Record<string, string> = {
+      'cleaning': 'Cleaning',
+      'gardening': 'Gardening',
+      'moving': 'Moving',
+      'home_maintenance': 'Home Maintenance',
+      'painting': 'Painting',
+      'other': 'Other'
+    };
+    return categoryLabels[category] || category;
+  };
+
+  // Only show skeleton if loading and no tasks exist
+  if (isLoading && tasks.length === 0) {
+    console.log('🔄 Showing task skeleton - loading:', isLoading, 'tasks count:', tasks.length);
+    return <TaskListSkeleton count={5} />;
+  }
+
   return (
     <div className="space-y-4">
       {tasks.map(task => {
@@ -76,11 +97,11 @@ export const TaskList: React.FC<TaskListProps> = ({
                 </div>
                 <div className="flex items-center">
                   <span className="text-lg mr-2" role="img" aria-label="money bag">💰</span>
-                  <span className="text-sm">{task.budget_min} - {task.budget_max} RWF</span>
+                  <span className="text-sm">{task.min_price} - {task.max_price} RWF</span>
                 </div>
                 <div className="flex items-center">
                   <User className="w-4 h-4 mr-2" />
-                  <span className="text-sm capitalize">{task.category}</span>
+                  <span className="text-sm">{getCategoryLabel(task.category)}</span>
                 </div>
               </div>
               {/* View Bids button for active tasks */}

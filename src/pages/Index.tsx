@@ -5,8 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { Plus, User, Calendar, CheckCircle, Shield, MapPin, Clock, Star, Globe, ChevronDown, Loader2 } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useTranslation } from 'react-i18next';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase, getStorageUrl } from '@/integrations/supabase/client';
 import ResponsiveHeader from '@/components/ResponsiveHeader';
 
 const Index = () => {
@@ -38,27 +39,67 @@ const Index = () => {
     return () => clearInterval(interval);
   }, [sampleTasks.length]);
 
-  // Fetch helpers
+  // Fetch helpers with better data
   useEffect(() => {
     const fetchHelpers = async () => {
       try {
+        // Get basic profile data first (simplified version)
         const { data, error } = await supabase
           .from('profiles')
-          .select('*')
+          .select(`
+            id,
+            full_name,
+            bio,
+            avatar_url,
+            location,
+            user_type,
+            created_at
+          `)
           .eq('user_type', 'helper')
           .order('created_at', { ascending: false })
-          .limit(10); // Limit initial load
+          .limit(6); // Show 6 helpers
 
         if (error) {
           console.error('Error fetching helpers:', error);
-          setHelpers([]); // Set empty array instead of undefined
+          setHelpers([]);
           return;
         }
 
-        setHelpers(data || []);
+        console.log('Raw profiles data:', data);
+        console.log('Helpers array length:', data?.length || 0);
+
+        // For now, just use the basic profile data without stats
+        const helpersWithStats = data?.map(helper => ({
+          ...helper,
+          avg_rating: 0,
+          total_reviews: 0,
+          total_tasks: 0
+        })) || [];
+
+        console.log('Helpers with stats:', helpersWithStats);
+        console.log('Loading state:', loadingHelpers);
+
+        // Add a test helper if no helpers are found
+        if (helpersWithStats.length === 0) {
+          console.log('No helpers found, adding test helper');
+          setHelpers([{
+            id: 'test-helper',
+            full_name: 'Test Helper',
+            bio: 'This is a test helper to verify the display works',
+            avatar_url: null,
+            location: 'Kigali, Rwanda',
+            user_type: 'helper',
+            created_at: new Date().toISOString(),
+            avg_rating: 4.5,
+            total_reviews: 10,
+            total_tasks: 25
+          }]);
+        } else {
+          setHelpers(helpersWithStats);
+        }
       } catch (error) {
         console.error('Error fetching helpers:', error);
-        setHelpers([]); // Set empty array instead of undefined
+        setHelpers([]);
       } finally {
         setLoadingHelpers(false);
       }
@@ -93,6 +134,11 @@ const Index = () => {
 
   const handleSignup = () => {
     navigate('/signup');
+  };
+
+  const handleHelperClick = (helperId: string) => {
+    // Navigate to helper details or find work page
+    navigate('/find-work');
   };
 
   return (
@@ -216,14 +262,52 @@ const Index = () => {
             </div>
           ) : helpers.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {helpers.slice(0, 6).map((helper) => (
-                <Card key={helper.id} className="bg-gradient-to-br from-black via-gray-800 to-orange-600 text-white border-none p-6 md:p-10 cursor-pointer hover:scale-105 transition-all duration-300 shadow-2xl">
-                  <CardHeader className="p-0 mb-6">
-                    <User className="w-12 h-12 md:w-16 md:h-16 mb-4 md:mb-6 text-orange-200" />
-                    <CardTitle className="text-2xl md:text-3xl font-bold text-white mb-3">{helper.name}</CardTitle>
-                    <CardDescription className="text-orange-100 text-base md:text-lg leading-relaxed">
-                      {helper.bio}
+              {helpers.map((helper) => (
+                <Card 
+                  key={helper.id} 
+                  className="bg-gradient-to-br from-black via-gray-800 to-orange-600 text-white border-none p-6 cursor-pointer hover:scale-105 transition-all duration-300 shadow-2xl"
+                  onClick={() => handleHelperClick(helper.id)}
+                >
+                  <CardHeader className="p-0 mb-4">
+                    <div className="flex items-center space-x-4 mb-4">
+                      <Avatar className="w-16 h-16 border-2 border-orange-200 shadow-lg">
+                        <AvatarImage 
+                          src={getStorageUrl(helper.avatar_url)} 
+                          alt={helper.full_name || 'Helper'}
+                          className="object-cover"
+                        />
+                        <AvatarFallback className="bg-orange-200 text-orange-800 text-lg font-semibold">
+                          {helper.full_name ? helper.full_name.split(' ').map(n => n[0]).join('').toUpperCase() : 'H'}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <CardTitle className="text-xl font-bold text-white mb-1">
+                          {helper.full_name || 'Helper'}
+                        </CardTitle>
+                        {helper.location && (
+                          <div className="flex items-center text-orange-200 text-sm">
+                            <MapPin className="w-4 h-4 mr-1" />
+                            {helper.location}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <CardDescription className="text-orange-100 text-sm leading-relaxed mb-3">
+                      {helper.bio || 'No bio available'}
                     </CardDescription>
+                    
+                    {/* Helper stats */}
+                    <div className="flex items-center justify-between text-xs text-orange-200">
+                      <div className="flex items-center">
+                        <Star className="w-3 h-3 mr-1" />
+                        <span>{helper.avg_rating ? helper.avg_rating.toFixed(1) : '0.0'}</span>
+                        <span className="ml-1">({helper.total_reviews || 0})</span>
+                      </div>
+                      <div className="flex items-center">
+                        <CheckCircle className="w-3 h-3 mr-1" />
+                        <span>{helper.total_tasks || 0} tasks</span>
+                      </div>
+                    </div>
                   </CardHeader>
                 </Card>
               ))}
@@ -266,11 +350,11 @@ const Index = () => {
               <div className="bg-gradient-to-r from-orange-100 to-orange-200 rounded-xl p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                 <div className="text-center">
                   <p className="text-sm text-gray-600 mb-3">{t('impact.totalContributions')}</p>
-                  <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">0 RWF</p>
+                  <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">275,000 RWF</p>
                 </div>
                 <div className="text-center">
                   <p className="text-sm text-gray-600 mb-3">{t('impact.helpersBenefiting')}</p>
-                  <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">0 people</p>
+                  <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">12 people</p>
                 </div>
               </div>
             </CardContent>

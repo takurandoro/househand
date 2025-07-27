@@ -1,7 +1,7 @@
 export type TaskCategory = 
   | 'cleaning'
   | 'gardening'
-  | 'maintenance'
+  | 'home_maintenance'
   | 'moving'
   | 'painting'
   | 'other';

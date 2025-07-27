@@ -32,9 +32,9 @@ export const handleBid = async (options: BidActionOptions): Promise<Bid | null> 
           throw new Error('Message and proposed price are required');
         }
 
-        // Validate proposed price is within budget range
-        if (proposedPrice.amount < task.budget_min || proposedPrice.amount > task.budget_max) {
-          throw new Error(`Proposed price must be between ${task.budget_min} and ${task.budget_max}`);
+        // Validate proposed price is within task budget
+        if (proposedPrice.amount < task.min_price || proposedPrice.amount > task.max_price) {
+          throw new Error(`Proposed price must be between ${task.min_price} and ${task.max_price}`);
         }
 
         // Check for existing bid
@@ -218,8 +218,8 @@ export const getBidsByTaskId = async (taskId: string): Promise<BidWithRelations[
           description,
           status,
           location,
-          budget_min,
-          budget_max
+          min_price,
+          max_price
         )
       `)
       .eq('task_id', taskId)
@@ -248,8 +248,8 @@ export const getBidsByHelperId = async (
           description,
           status,
           location,
-          budget_min,
-          budget_max,
+          min_price,
+          max_price,
           client:profiles!tasks_client_id_fkey (
             id,
             full_name,

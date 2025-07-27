@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from '@/hooks/use-toast';
-import { TaskCategory } from '@/types';
-import { createTask } from "@/integrations/supabase/client";
+import { TaskCategory } from '@/types/common';
+import { useCreateTask } from '@/hooks/data/useTasks';
 import { useAuth } from "@/hooks/dashboard/useAuth";
 
 interface CreateTaskDialogProps {
@@ -37,6 +37,7 @@ const TASK_CATEGORIES: TaskCategory[] = [
   'gardening',
   'moving',
   'home_maintenance',
+  'painting',
   'other',
 ];
 
@@ -45,13 +46,14 @@ const CATEGORY_LABELS: Record<TaskCategory, string> = {
   gardening: 'Gardening',
   moving: 'Moving',
   home_maintenance: 'Home Maintenance',
+  painting: 'Painting',
   other: 'Other',
 };
 
 export const CreateTaskDialog = ({ isOpen, onClose, onTaskCreated }: CreateTaskDialogProps) => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const createTaskMutation = useCreateTask();
   const [newTask, setNewTask] = useState<NewTask>({
     title: '',
     description: '',
@@ -124,47 +126,36 @@ export const CreateTaskDialog = ({ isOpen, onClose, onTaskCreated }: CreateTaskD
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+
+    if (!newTask.title || !newTask.description || !newTask.location || !user?.id) {
+      toast({
+        title: "Missing Fields",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+      });
+      return;
+    }
 
     try {
-      if (!newTask.title || !newTask.description || !newTask.location || !user?.id) {
-        toast({
-          title: "Missing Fields",
-          description: "Please fill in all required fields",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      await createTask({
-        client_id: user.id,
+      const taskData = {
         title: newTask.title,
         description: newTask.description,
         category: newTask.category,
         location: newTask.location,
         min_price: newTask.min_price,
         max_price: newTask.max_price,
-        hours: newTask.hours,
-        payment_status: false,
-        status: 'open'
-      });
-
-      toast({
-        title: "Success",
-        description: "Task created successfully",
-        variant: "success",
-      });
+        hours: newTask.hours
+      };
+      
+      console.log('Creating task with data:', taskData);
+      
+      await createTaskMutation.mutateAsync(taskData);
 
       onTaskCreated();
       onClose();
     } catch (error) {
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to create task",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
+      // Error handling is done by the mutation
+      console.error('Task creation failed:', error);
     }
   };
 
@@ -315,16 +306,16 @@ export const CreateTaskDialog = ({ isOpen, onClose, onTaskCreated }: CreateTaskD
               type="button"
               variant="outline"
               onClick={onClose}
-              disabled={isSubmitting}
+              disabled={createTaskMutation.isPending}
             >
               Cancel
             </Button>
             <Button
               type="submit"
-              disabled={isSubmitting}
+              disabled={createTaskMutation.isPending}
               className="bg-orange-600 hover:bg-orange-700 text-white"
             >
-              {isSubmitting ? 'Posting...' : 'Post Task'}
+              {createTaskMutation.isPending ? 'Posting...' : 'Post Task'}
             </Button>
           </DialogFooter>
         </form>

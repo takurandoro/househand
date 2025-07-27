@@ -28,6 +28,7 @@ import { useClientDetails } from "@/hooks/dashboard/useClientDetails";
 import { Profile } from "@/types/user";
 import { TaskPaymentDialog } from "@/components/client/TaskPaymentDialog";
 import { handleBid as apiHandleBid } from '@/api/bids';
+import { LoadingScreen } from '@/components/ui/loading-screen';
 
 interface UserProfile extends Profile {
   id: string;
@@ -259,7 +260,7 @@ const Dashboard = () => {
 
   // Filter tasks based on user type and filters
   const filteredTasks = useMemo(() => {
-    if (!tasks) return [];
+    if (!tasks || tasks.length === 0) return [];
     
     // Filter by location and effort level
     const filtered = tasks.filter(task => {
@@ -385,7 +386,7 @@ const Dashboard = () => {
   // Wrap data fetching in try/catch
   try {
     if (isLoadingAuth) {
-      return <div>Loading...</div>;
+      return <LoadingScreen message="Setting up your dashboard..." />;
     }
 
     if (!user || !userProfile) {
@@ -456,6 +457,7 @@ const Dashboard = () => {
             avatar_url: userProfile.avatar_url
           }}
           tasks={filteredTasks}
+          isLoading={isLoadingTasks && filteredTasks.length === 0}
           expandedTaskId={expandedTaskId}
           onTaskExpand={setExpandedTaskId}
           onAcceptBid={(taskId: string, bidId: string) => {
@@ -469,6 +471,9 @@ const Dashboard = () => {
           }
           onPaymentRequest={handlePaymentRequest}
           userId={user.id}
+          onTaskCreated={() => {
+            queryClient.invalidateQueries({ queryKey: ['tasks'] });
+          }}
           onReviewComplete={handleReviewComplete}
         />
       )}
@@ -492,7 +497,7 @@ const Dashboard = () => {
               <DialogTitle>Client Details</DialogTitle>
             </DialogHeader>
             {isLoadingClientDetails ? (
-              <div>Loading...</div>
+              <LoadingScreen message="Loading your tasks..." />
             ) : (
               <div className="space-y-4 py-4">
                 <div className="flex items-center gap-4">

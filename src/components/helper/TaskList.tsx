@@ -26,6 +26,9 @@ export const TaskList: React.FC<TaskListProps> = ({
   onCompleteTask,
   onWithdrawBid
 }) => {
+  // Move useState to the top level of the component
+  const [callConfirmed, setCallConfirmed] = useState<Record<string, boolean>>({});
+
   const getStatusBadge = (status: string, paymentStatus?: boolean) => {
     const statusConfig = {
       open: { label: 'Open', variant: 'secondary' as const, color: 'bg-blue-100 text-blue-800' },
@@ -55,6 +58,18 @@ export const TaskList: React.FC<TaskListProps> = ({
     return clientName.split(' ').map(n => n[0]).join('').toUpperCase();
   };
 
+  const getCategoryLabel = (category: string) => {
+    const categoryLabels: Record<string, string> = {
+      'cleaning': 'Cleaning',
+      'gardening': 'Gardening',
+      'moving': 'Moving',
+      'home_maintenance': 'Home Maintenance',
+      'painting': 'Painting',
+      'other': 'Other'
+    };
+    return categoryLabels[category] || category;
+  };
+
   return (
     <div className="space-y-4">
       {tasks.map((task, idx) => {
@@ -62,9 +77,6 @@ export const TaskList: React.FC<TaskListProps> = ({
           const userBid = task.bids?.find(bid => bid.helper_id === userId);
           const statusConfig = getStatusBadge(task.status, task.payment_status);
           const totalBids = task.bids?.length || 0;
-
-          // Track call confirmation per task
-          const [callConfirmed, setCallConfirmed] = useState<Record<string, boolean>>({});
 
           // Helper: show call prompt if bid accepted and task assigned
           const showCallPrompt = userBid?.status === 'accepted' && task.status === 'assigned' && !callConfirmed[task.id];
@@ -100,7 +112,9 @@ export const TaskList: React.FC<TaskListProps> = ({
                           {getClientInitials(task.client?.full_name)}
                         </AvatarFallback>
                       </Avatar>
-                      <span>by {task.client?.full_name || 'Anonymous Client'}</span>
+                      <span>
+                        by {task.client?.full_name || 'Anonymous Client'}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -119,7 +133,9 @@ export const TaskList: React.FC<TaskListProps> = ({
                     <div className="flex items-center gap-2">
                       {/* Replace DollarSign icon with emoji */}
                       <span className="text-lg" role="img" aria-label="money bag">💰</span>
-                      <span>{task.budget_min} - {task.budget_max} RWF</span>
+                      <span>
+                        {task.min_price || 0} - {task.max_price || 0} RWF
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4 text-muted-foreground" />
@@ -152,7 +168,7 @@ export const TaskList: React.FC<TaskListProps> = ({
                   <div className="flex items-center justify-between pt-2">
                     <div className="flex items-center gap-2">
                       <Badge variant="outline" className="text-xs">
-                        {task.category}
+                        {getCategoryLabel(task.category)}
                       </Badge>
                       {task.hours && (
                         <Badge variant="outline" className="text-xs">
@@ -229,8 +245,24 @@ export const TaskList: React.FC<TaskListProps> = ({
             </Card>
           );
         } catch (err) {
-          console.error('Error rendering task in TaskList:', { task, err });
-          return <div className="text-red-500">Error rendering task. Check console for details.</div>;
+          console.error('Error rendering task in TaskList:', { 
+            taskId: task?.id, 
+            taskTitle: task?.title,
+            error: err,
+            taskData: task 
+          });
+          return (
+            <Card key={`error-${idx}`} className="border-red-200 bg-red-50">
+              <CardContent className="p-4">
+                <div className="text-red-600 text-sm">
+                  Error rendering task: {task?.title || 'Unknown task'}
+                </div>
+                <div className="text-red-500 text-xs mt-1">
+                  Check console for details
+                </div>
+              </CardContent>
+            </Card>
+          );
         }
       })}
     </div>

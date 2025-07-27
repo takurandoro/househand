@@ -40,11 +40,11 @@ export const BidDialog: React.FC<BidDialogProps> = ({
       return;
     }
 
-    if (price < task.budget_min || price > task.budget_max) {
+    if (price < task.min_price || price > task.max_price) {
       toast({
-        title: "Invalid price",
-        description: `Price must be between ${task.budget_min} and ${task.budget_max} RWF`,
-        variant: "destructive"
+        title: "Invalid Price",
+        description: `Price must be between ${task.min_price} and ${task.max_price} RWF`,
+        variant: "destructive",
       });
       return;
     }
@@ -78,7 +78,7 @@ export const BidDialog: React.FC<BidDialogProps> = ({
             />
             {task && (
               <p className="text-sm text-gray-500 mt-1">
-                Budget range: {task.budget_min} - {task.budget_max} RWF
+                Budget range: {task.min_price} - {task.max_price} RWF
               </p>
             )}
           </div>

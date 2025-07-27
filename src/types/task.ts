@@ -8,8 +8,8 @@ export interface Task {
   description: string;
   category: TaskCategory;
   location: string;
-  budget_min: number;
-  budget_max: number;
+  min_price: number;
+  max_price: number;
   hours: string;
   status: TaskStatus;
   payment_status: boolean;
@@ -61,8 +61,8 @@ export interface TaskCreateOptions {
   description: string;
   category: TaskCategory;
   location: string;
-  budget_min: number;
-  budget_max: number;
+  min_price: number;
+  max_price: number;
   hours: string;
 }
 

@@ -1,10 +1,10 @@
 import { useQuery, useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
-import { Task, TaskStatus, TaskViewFilter, TaskUpdateOptions, TaskWithRelations } from '@/types';
+import { Task, TaskStatus, TaskViewFilter, TaskUpdateOptions, TaskWithRelations, TaskCreateOptions } from '@/types';
 import * as tasksApi from '@/api/tasks';
 import { useToast } from '@/hooks/use-toast';
 
-const STALE_TIME = 5 * 60 * 1000; // 5 minutes
-const CACHE_TIME = 30 * 60 * 1000; // 30 minutes
+const STALE_TIME = 2 * 60 * 1000; // 2 minutes - shorter for faster updates
+const CACHE_TIME = 10 * 60 * 1000; // 10 minutes - shorter cache time
 
 export const useTasks = (
   options: {
@@ -31,6 +31,9 @@ export const useTasks = (
       }
       return failureCount < 3;
     },
+    // Add optimistic updates and better loading states
+    refetchOnWindowFocus: false, // Don't refetch when window gains focus
+    refetchOnMount: true, // Always refetch when component mounts
     ...queryOptions,
   });
 };
@@ -143,8 +146,15 @@ export const useCreateTask = () => {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: tasksApi.createTask,
+    mutationFn: async (options: TaskCreateOptions) => {
+      console.log('useCreateTask: Starting task creation with options:', options);
+      const result = await tasksApi.createTask(options);
+      console.log('useCreateTask: Task creation successful:', result);
+      return result;
+    },
     onSuccess: (newTask) => {
+      console.log('useCreateTask: onSuccess called with new task:', newTask);
+      
       // Update tasks cache with new task
       queryClient.setQueriesData({ queryKey: ['tasks'] }, (old: Task[] | undefined) => {
         if (!old) return [newTask];
@@ -157,6 +167,8 @@ export const useCreateTask = () => {
       });
     },
     onError: (error) => {
+      console.error('useCreateTask: onError called with error:', error);
+      
       toast({
         title: 'Error',
         description: error instanceof Error 

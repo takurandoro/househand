@@ -31,6 +31,9 @@ export const useAuth = () => {
   useEffect(() => {
     const initializeAuth = async () => {
       try {
+        // Add a small delay to show the loading screen
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
           navigate('/login');

@@ -239,4 +239,30 @@ export const getUserStats = async (userId: string): Promise<UserStats> => {
   } catch (error) {
     throw handleApiError(error);
   }
+};
+
+// Get helper stats using secure function
+export const getHelperStats = async (helperId?: string) => {
+  try {
+    const { data, error } = await supabase
+      .rpc('get_helper_stats', { p_helper_id: helperId || null });
+
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};
+
+// Get helper balance using secure function
+export const getHelperBalance = async (helperId?: string) => {
+  try {
+    const { data, error } = await supabase
+      .rpc('get_helper_balance', { p_helper_id: helperId || null });
+
+    if (error) throw error;
+    return data?.[0] || null;
+  } catch (error) {
+    throw handleApiError(error);
+  }
 }; 

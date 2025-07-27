@@ -11,8 +11,9 @@ import FindWork from '@/pages/FindWork';
 import About from '@/pages/About';
 import NotFound from '@/pages/NotFound';
 import "./i18n/config";
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { supabase } from './integrations/supabase/client'
+import { LoadingScreen } from '@/components/ui/loading-screen';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,6 +25,8 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
+  const [isInitializing, setIsInitializing] = useState(true);
+
   // Test Supabase connection
   useEffect(() => {
     const testConnection = async () => {
@@ -38,11 +41,18 @@ const App = () => {
         }
       } catch (err) {
         console.error('Error testing Supabase connection:', err)
+      } finally {
+        // Add a small delay to show the loading screen
+        setTimeout(() => setIsInitializing(false), 1000);
       }
     }
     
     testConnection()
   }, [])
+
+  if (isInitializing) {
+    return <LoadingScreen message="Initializing HouseHand..." />;
+  }
 
   return (
     <QueryClientProvider client={queryClient}>

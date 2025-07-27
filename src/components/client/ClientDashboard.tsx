@@ -22,6 +22,7 @@ interface UserProfile {
 
 interface ClientDashboardProps {
   tasks: TaskWithRelations[];
+  isLoading?: boolean;
   userProfile: UserProfile;
   expandedTaskId?: string | null;
   onTaskExpand?: (taskId: string | null) => void;
@@ -35,6 +36,7 @@ interface ClientDashboardProps {
 
 export const ClientDashboard = ({
   tasks,
+  isLoading = false,
   userProfile,
   expandedTaskId,
   onTaskExpand = () => {},
@@ -90,6 +92,7 @@ export const ClientDashboard = ({
                 ) : (
                   <TaskList
                     tasks={activeTasks}
+                    isLoading={isLoading}
                     expandedTaskId={expandedTaskId}
                     onTaskExpand={onTaskExpand}
                     onAcceptBid={onAcceptBid}
@@ -104,6 +107,7 @@ export const ClientDashboard = ({
                 ) : (
                   <TaskList
                     tasks={completedTasks}
+                    isLoading={isLoading}
                     expandedTaskId={expandedTaskId}
                     onTaskExpand={onTaskExpand}
                     onAcceptBid={onAcceptBid}

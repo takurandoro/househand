@@ -247,7 +247,7 @@ const BidManagement: React.FC<BidManagementProps> = ({
                     <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
                       <div className="flex items-center gap-1">
                         <span className="text-lg" role="img" aria-label="money bag">💰</span>
-                        <span>{bid.tasks.budget_min} - {bid.tasks.budget_max} RWF</span>
+                        <span>{bid.tasks.min_price} - {bid.tasks.max_price} RWF</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <MapPin className="h-4 w-4" />

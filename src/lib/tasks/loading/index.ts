@@ -12,42 +12,13 @@ interface LoadTasksOptions {
 }
 
 export const loadTasksForView = async (options: LoadTasksOptions): Promise<TaskWithRelations[]> => {
+  const startTime = performance.now();
   const { userId, userType, view, location, effortLevels } = options;  
 
-  // Base query with common relations
+  // Simple base query without nested relations to avoid RLS recursion
   let query = supabase
     .from('tasks')
-    .select(`
-      *,
-      client:profiles!tasks_client_id_fkey(
-        id,
-        full_name,
-        avatar_url,
-        phone_number,
-        location,
-        email,
-        created_at,
-        updated_at
-      ),
-      bids:bids(
-        id,
-        helper_id,
-        task_id,
-        message,
-        proposed_price,
-        status,
-        created_at,
-        accepted_at,
-        rejected_at,
-        helper:profiles!bids_helper_id_fkey(
-          id,
-          full_name,
-          avatar_url,
-          location
-        )
-      ),
-      helper:profiles!tasks_selected_helper_id_fkey(*)
-    `);
+    .select('*');
 
   let data: any[] = [];
   let error = null;
@@ -61,58 +32,26 @@ export const loadTasksForView = async (options: LoadTasksOptions): Promise<TaskW
           query = query.ilike('location', `%${location}%`);
         }
 
-        // Remove any references to effort_level in queries, filters, and returned data
-        // if (options.hours && options.hours.length > 0) {
-        //   query = query.in('hours', options.hours);
-        // }
-
         if (options.categories && options.categories.length > 0) {
           query = query.in('category', options.categories);
         }
 
-        const result = await query.order('created_at', { ascending: false });
-        
-        // Get helper information for each bid
-        if (result.data) {
-          const helperIds = new Set(result.data.flatMap(task => 
-            task.bids.map((bid: any) => bid.helper_id)
-          ));
-
-          // Get helper profiles
-          const { data: profileData, error: profileError } = await supabase
-            .from('profiles')
-            .select('id, full_name, avatar_url, location')
-            .in('id', Array.from(helperIds));
-
-          if (profileError) {
-            const errorMsg = profileError instanceof Error ? profileError.message : JSON.stringify(profileError);
-            console.error('Error fetching profile data:', errorMsg);
-          }
-
-          // Map helper data to tasks
-          data = result.data.map(task => ({
-            ...task,
-            bids: task.bids.map((bid: any) => {
-              const helper = profileData?.find(h => h.id === bid.helper_id);
-              return {
-                ...bid,
-                helper: helper ? {
-                  id: helper.id,
-                  full_name: helper.full_name,
-                  avatar_url: helper.avatar_url,
-                  location: helper.location
-                } : null
-              };
-            })
-          }));
-        }
-        error = result.error;
-
-        // --- Frontend hours filter ---
         if (options.hours && options.hours.length > 0) {
-          const normalize = (s: string | null | undefined) => (s || '').trim().toLowerCase();
-          data = data.filter(task => options.hours!.map(normalize).includes(normalize(task.hours)));
+          query = query.in('hours', options.hours);
+          console.log('🔍 Applying hours filter:', options.hours);
         }
+
+        const result = await query.order('created_at', { ascending: false });
+        data = result.data || [];
+        error = result.error;
+        
+        console.log('🔍 Available tasks query result:', {
+          hoursFilter: options.hours,
+          categoriesFilter: options.categories,
+          locationFilter: location,
+          tasksFound: data.length,
+          sampleTask: data.length > 0 ? data[0] : null
+        });
         break;
       }
 
@@ -120,60 +59,28 @@ export const loadTasksForView = async (options: LoadTasksOptions): Promise<TaskW
         // Get all tasks where the helper has bids
         const { data: bidData, error: bidError } = await supabase
           .from('bids')
-          .select('*, task:tasks(*, client:profiles!tasks_client_id_fkey(*)), helper:profiles!bids_helper_id_fkey(id, full_name, avatar_url, location)')
-          .eq('helper_id', userId)
-          .order('created_at', { ascending: false });
+          .select('task_id')
+          .eq('helper_id', userId);
 
         if (bidError) {
-          const errorMsg = bidError instanceof Error ? bidError.message : JSON.stringify(bidError);
-          console.error('Error fetching bids:', errorMsg);
+          console.error('Error fetching bids:', bidError);
           throw bidError;
         }
 
-        // Transform the data to match expected format
-        data = bidData?.map(bid => ({
-          // Defensive: ensure all required TaskWithRelations fields are present
-          id: bid.task?.id || '',
-          title: bid.task?.title || '',
-          description: bid.task?.description || '',
-          category: bid.task?.category || '',
-          location: bid.task?.location || '',
-          budget_min: bid.task?.budget_min || 0,
-          budget_max: bid.task?.budget_max || 0,
-          hours: bid.task?.hours || '',
-          status: bid.task?.status || '',
-          payment_status: bid.task?.payment_status || false,
-          has_review: bid.task?.has_review || false,
-          client_id: bid.task?.client_id || '',
-          selected_helper_id: bid.task?.selected_helper_id || null,
-          created_at: bid.task?.created_at || '',
-          updated_at: bid.task?.updated_at || '',
-          completed_at: bid.task?.completed_at,
-          payment_amount: bid.task?.payment_amount,
-          payment_date: bid.task?.payment_date,
-          agreed_amount: bid.task?.agreed_amount,
-          client: bid.task?.client,
-          helper: bid.helper ? {
-            id: bid.helper.id,
-            full_name: bid.helper.full_name,
-            avatar_url: bid.helper.avatar_url,
-            location: bid.helper.location
-          } : null,
-          bids: [{
-            id: bid.id,
-            helper_id: bid.helper_id,
-            status: bid.status,
-            message: bid.message,
-            proposed_price: bid.proposed_price,
-            created_at: bid.created_at,
-            helper: bid.helper ? {
-              id: bid.helper.id,
-              full_name: bid.helper.full_name,
-              avatar_url: bid.helper.avatar_url,
-              location: bid.helper.location
-            } : null
-          }]
-        })) || [];
+        const taskIds = bidData?.map(bid => bid.task_id) || [];
+        
+        if (taskIds.length > 0) {
+          const { data: taskData, error: taskError } = await supabase
+            .from('tasks')
+            .select('*')
+            .in('id', taskIds)
+            .order('created_at', { ascending: false });
+          
+          data = taskData || [];
+          error = taskError;
+        } else {
+          data = [];
+        }
         break;
       }
 
@@ -184,28 +91,7 @@ export const loadTasksForView = async (options: LoadTasksOptions): Promise<TaskW
           .order('created_at', { ascending: false });
         
         const result = await query;
-        
-        // Get helper profiles
-        const { data: helperData } = await supabase
-          .from('profiles')
-          .select('id, full_name, avatar_url, location')
-          .eq('id', userId);
-
-        // Transform the data to include helper information
-        if (result.data) {
-          data = result.data.map(task => ({
-            ...task,
-            bids: task.bids.map((bid: any) => ({
-              ...bid,
-              helper: helperData?.[0] ? {
-                id: helperData[0].id,
-                full_name: helperData[0].full_name,
-                avatar_url: helperData[0].avatar_url,
-                location: helperData[0].location
-              } : null
-            }))
-          }));
-        }
+        data = result.data || [];
         error = result.error;
         break;
       }
@@ -230,16 +116,104 @@ export const loadTasksForView = async (options: LoadTasksOptions): Promise<TaskW
     throw error;
   }
 
-  // Client-side filter for `my_bids`
-  let filteredData = data;
-
-  if (view === 'my_bids' && userType === 'helper') {
-    filteredData = filteredData.filter((task) => {
-      if (task.selected_helper_id === userId) return true;
-      if (Array.isArray(task.bids) && task.bids.some(b => b.helper_id === userId)) return true;
-      return false;
-    });
+  // Optimize by fetching related data in batches instead of individual queries
+  if (data.length === 0) {
+    return [];
   }
 
-  return filteredData;
+  // Get all unique IDs for batch queries
+  const clientIds = [...new Set(data.map(task => task.client_id))];
+  const helperIds = [...new Set(data.filter(task => task.selected_helper_id).map(task => task.selected_helper_id!))];
+  const taskIds = data.map(task => task.id);
+
+  // Batch fetch all client profiles
+  const { data: clientProfiles, error: clientError } = await supabase
+    .from('profiles')
+    .select('id, full_name, avatar_url, phone_number, location, email, created_at, updated_at')
+    .in('id', clientIds);
+
+  console.log('🔍 Client profiles fetch:', {
+    clientIds,
+    clientProfiles,
+    clientError,
+    clientCount: clientProfiles?.length || 0
+  });
+
+  // Batch fetch all helper profiles
+  const { data: helperProfiles, error: helperError } = await supabase
+    .from('profiles')
+    .select('id, full_name, avatar_url, location')
+    .in('id', helperIds);
+
+  console.log('🔍 Helper profiles fetch:', {
+    helperIds,
+    helperProfiles,
+    helperError,
+    helperCount: helperProfiles?.length || 0
+  });
+
+  // Batch fetch all bids for all tasks
+  const { data: allBids } = await supabase
+    .from('bids')
+    .select('id, helper_id, task_id, message, proposed_price, status, created_at, accepted_at, rejected_at')
+    .in('task_id', taskIds);
+
+  // Get all unique helper IDs from bids
+  const bidHelperIds = [...new Set(allBids?.map(bid => bid.helper_id) || [])];
+
+  // Batch fetch all helper profiles for bids
+  const { data: bidHelperProfiles } = await supabase
+    .from('profiles')
+    .select('id, full_name, avatar_url, location')
+    .in('id', bidHelperIds);
+
+  // Create lookup maps for fast access
+  const clientMap = new Map(clientProfiles?.map(client => [client.id, client]) || []);
+  const helperMap = new Map(helperProfiles?.map(helper => [helper.id, helper]) || []);
+  const bidHelperMap = new Map(bidHelperProfiles?.map(helper => [helper.id, helper]) || []);
+
+  console.log('🔍 Client map created:', {
+    clientMapSize: clientMap.size,
+    clientMapKeys: Array.from(clientMap.keys()),
+    sampleClient: clientMap.size > 0 ? Array.from(clientMap.values())[0] : null
+  });
+
+  // Group bids by task ID
+  const bidsByTask = new Map();
+  allBids?.forEach(bid => {
+    if (!bidsByTask.has(bid.task_id)) {
+      bidsByTask.set(bid.task_id, []);
+    }
+    bidsByTask.get(bid.task_id).push({
+      ...bid,
+      helper: bidHelperMap.get(bid.helper_id)
+    });
+  });
+
+  // Enrich tasks with related data
+  const enrichedData = data.map(task => {
+    const client = clientMap.get(task.client_id);
+    const helper = task.selected_helper_id ? helperMap.get(task.selected_helper_id) : null;
+    const bids = bidsByTask.get(task.id) || [];
+    
+    console.log('🔍 Enriching task:', {
+      taskId: task.id,
+      taskTitle: task.title,
+      clientId: task.client_id,
+      client: client,
+      clientName: client?.full_name || 'NO CLIENT FOUND'
+    });
+    
+    return {
+      ...task,
+      client,
+      helper,
+      bids
+    };
+  });
+
+  const endTime = performance.now();
+  console.log(`🚀 Tasks loaded in ${(endTime - startTime).toFixed(2)}ms (${data.length} tasks)`);
+
+  return enrichedData;
 }; 

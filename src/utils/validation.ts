@@ -1,44 +1,32 @@
 import { Task, Bid } from '@/types';
 
-export const validateTaskInput = (task: Partial<Task>): string | null => {
-  if (!task.title?.trim()) {
-    return 'Title is required';
+export const validateTask = (task: any): string | null => {
+  if (!task.title || !task.description || !task.location) {
+    return 'Title, description, and location are required';
   }
 
-  if (!task.description?.trim()) {
-    return 'Description is required';
+  if (!task.min_price || !task.max_price) {
+    return 'Minimum and maximum prices are required';
   }
 
-  if (!task.location?.trim()) {
-    return 'Location is required';
+  if (task.min_price < 0 || task.max_price < 0) {
+    return 'Prices must be positive numbers';
   }
 
-  if (!task.budget_min || !task.budget_max) {
-    return 'Budget range is required';
-  }
-
-  if (task.budget_min < 0 || task.budget_max < 0) {
-    return 'Budget cannot be negative';
-  }
-
-  if (task.budget_min > task.budget_max) {
-    return 'Minimum budget cannot be greater than maximum budget';
+  if (task.min_price > task.max_price) {
+    return 'Minimum price cannot be greater than maximum price';
   }
 
   return null;
 };
 
-export const validateBidInput = (bid: Partial<Bid>, task: Task): string | null => {
-  if (!bid.message?.trim()) {
-    return 'Message is required';
+export const validateBid = (bid: any, task: any): string | null => {
+  if (!bid.message || !bid.proposed_price) {
+    return 'Message and proposed price are required';
   }
 
-  if (!bid.proposed_price) {
-    return 'Proposed price is required';
-  }
-
-  if (bid.proposed_price < task.budget_min || bid.proposed_price > task.budget_max) {
-    return `Price must be between ${task.budget_min} and ${task.budget_max} RWF`;
+  if (bid.proposed_price < task.min_price || bid.proposed_price > task.max_price) {
+    return `Price must be between ${task.min_price} and ${task.max_price} RWF`;
   }
 
   return null;
