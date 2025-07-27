@@ -1,9 +1,11 @@
 
 import React from 'react';
-import { Button } from "@/components/ui/button";
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useNavigate } from "react-router-dom";
-import { User, ArrowLeft, Heart, Users, Shield, Globe, Target, Award } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Award, Globe, Users, TrendingUp, Shield, Heart, ArrowLeft, User, Target } from 'lucide-react';
+import ResponsiveHeader from '@/components/ResponsiveHeader';
+import { Footer } from '@/components/Footer';
 
 const About = () => {
   const navigate = useNavigate();
@@ -199,6 +201,9 @@ const About = () => {
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { User, Calendar, MapPin, Clock, Star, ArrowLeft } from "lucide-react";
 import { useTranslation } from 'react-i18next';
+import { Footer } from '@/components/Footer';
 
 const FindWork = () => {
   const { t } = useTranslation();
@@ -229,6 +230,7 @@ const FindWork = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

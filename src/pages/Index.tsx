@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useTranslation } from 'react-i18next';
 import { supabase, getStorageUrl } from '@/integrations/supabase/client';
 import ResponsiveHeader from '@/components/ResponsiveHeader';
+import { Footer } from '@/components/Footer';
 
 const Index = () => {
   const { t, i18n } = useTranslation();
@@ -379,64 +380,11 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-r from-black via-gray-900 to-orange-600 text-white py-8 md:py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            <div className="col-span-1 md:col-span-2 lg:col-span-1">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center">
-                  <User className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-xl font-bold">HouseHand</span>
-              </div>
-              <p className="text-orange-100 text-sm leading-relaxed">
-                {t('footer.description')}
-              </p>
-            </div>
-            
-            <div>
-              <h3 className="font-semibold mb-4 text-orange-200">{t('footer.platform')}</h3>
-              <ul className="space-y-2 text-sm text-orange-100">
-                <li><button onClick={handleGetHelp} className="hover:text-white transition-colors">{t('footer.postTask')}</button></li>
-                <li><button onClick={handleFindWork} className="hover:text-white transition-colors">{t('footer.findWork')}</button></li>
-                <li><button className="hover:text-white transition-colors">{t('footer.safety')}</button></li>
-                <li><button className="hover:text-white transition-colors">{t('footer.howItWorks')}</button></li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-4 text-orange-200">{t('footer.support')}</h3>
-              <ul className="space-y-2 text-sm text-orange-100">
-                <li><button className="hover:text-white transition-colors">{t('footer.helpCenter')}</button></li>
-                <li><button className="hover:text-white transition-colors">{t('footer.contactUs')}</button></li>
-                <li><button className="hover:text-white transition-colors">{t('footer.terms')}</button></li>
-                <li><button className="hover:text-white transition-colors">{t('footer.privacy')}</button></li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-4 text-orange-200">{t('footer.community')}</h3>
-              <ul className="space-y-2 text-sm text-orange-100">
-                <li><button onClick={handleAbout} className="hover:text-white transition-colors">{t('footer.aboutUs')}</button></li>
-                <li><button className="hover:text-white transition-colors">{t('footer.socialImpact')}</button></li>
-                <li><button className="hover:text-white transition-colors">{t('footer.blog')}</button></li>
-                <li><button className="hover:text-white transition-colors">{t('footer.careers')}</button></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-orange-300/30 mt-6 md:mt-8 pt-6 md:pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-orange-100 text-sm text-center md:text-left">
-              {t('footer.copyright')}
-            </p>
-            <div className="flex space-x-4">
-              <button className="text-orange-100 hover:text-white transition-colors">
-                <Globe className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer 
+        onGetHelp={handleGetHelp}
+        onFindWork={handleFindWork}
+        onAbout={handleAbout}
+      />
     </div>
   );
 };
